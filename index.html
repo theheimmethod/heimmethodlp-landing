@@ -323,11 +323,18 @@
     border:1px solid var(--card-line);
     border-radius:4px;
     overflow:hidden;
+    max-width:760px;
+    margin-left:auto;
+    margin-right:auto;
   }
 
+  /* the photo pair is deliberately capped so it never blows up on wide screens */
   .ba-stage{
     position:relative;
     background:#000;
+    width:100%;
+    max-width:560px;
+    margin:0 auto;
   }
   .ba-pair{
     display:grid;
@@ -1111,12 +1118,11 @@
      Leave before/after as "" and the slot shows a placeholder.
      ============================================================ */
   var CLIENTS = [
-    { name:"", role:"", duration:"", quote:"", before:"", after:"" },
-    { name:"", role:"", duration:"", quote:"", before:"", after:"" },
-    { name:"", role:"", duration:"", quote:"", before:"", after:"" },
-    { name:"", role:"", duration:"", quote:"", before:"", after:"" },
-    { name:"", role:"", duration:"", quote:"", before:"", after:"" },
-    { name:"", role:"", duration:"", quote:"", before:"", after:"" }
+    { name:"", role:"", duration:"", quote:"", before:"img/client1-before.webp", after:"img/client1-after.webp" },
+    { name:"", role:"", duration:"", quote:"", before:"img/client2-before.webp", after:"img/client2-after.webp" },
+    { name:"", role:"", duration:"", quote:"", before:"img/client3-before.webp", after:"img/client3-after.webp" },
+    { name:"", role:"", duration:"", quote:"", before:"img/client4-before.webp", after:"img/client4-after.webp" },
+    { name:"", role:"", duration:"", quote:"", before:"img/client5-before.webp", after:"img/client5-after.webp" }
   ];
 
   (function(){
@@ -1138,14 +1144,26 @@
       }
     }
 
+    var durationPill = document.getElementById('tDuration');
+
     function render(){
       var c = CLIENTS[idx];
-      var who = c.name || 'Client name';
+      var who = c.name || ('Client ' + (idx + 1));
       setHalf(beforeImg, beforeEmpty, c.before, who + ' before coaching');
       setHalf(afterImg, afterEmpty, c.after, who + ' after coaching');
-      durationText.textContent = 'Duration: ' + (c.duration || '—');
-      quoteEl.textContent = c.quote ? '“' + c.quote + '”' : 'Client testimonial to be added.';
-      attrEl.innerHTML = '<b>' + who + '</b> · ' + (c.role || 'Occupation');
+
+      // anything not filled in yet simply doesn't render
+      durationPill.hidden = !c.duration;
+      if(c.duration){ durationText.textContent = 'Duration: ' + c.duration; }
+
+      quoteEl.hidden = !c.quote;
+      if(c.quote){ quoteEl.textContent = '“' + c.quote + '”'; }
+
+      attrEl.hidden = !(c.name || c.role);
+      if(c.name || c.role){
+        attrEl.innerHTML = c.name ? '<b>' + c.name + '</b>' + (c.role ? ' · ' + c.role : '') : c.role;
+      }
+
       Array.prototype.forEach.call(strip.children, function(el, i){
         el.setAttribute('aria-selected', i === idx ? 'true' : 'false');
       });
@@ -1158,16 +1176,17 @@
         b.className = 'thumb';
         b.setAttribute('role','tab');
         b.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
-        var beforeInner = c.before ? '<img src="' + c.before + '" alt="">' : '';
-        var afterInner = c.after ? '<img src="' + c.after + '" alt="">' : '';
+        var lazy = ' loading="lazy" width="700" height="875"';
+        var beforeInner = c.before ? '<img src="' + c.before + '" alt=""' + lazy + '>' : '';
+        var afterInner = c.after ? '<img src="' + c.after + '" alt=""' + lazy + '>' : '';
         b.innerHTML =
           '<div class="thumb-pair">' +
             '<div class="thumb-half"><span class="thumb-tag">Before</span>' + beforeInner + '</div>' +
             '<div class="thumb-half"><span class="thumb-tag">After</span>' + afterInner + '</div>' +
           '</div>' +
           '<div class="thumb-meta">' +
-            '<div class="thumb-name">' + (c.name || 'Client ' + (i + 1)) + '</div>' +
-            '<div class="thumb-role">' + (c.role || 'Occupation') + '</div>' +
+            '<div class="thumb-name">' + (c.name || String(i + 1).padStart(2, '0')) + '</div>' +
+            (c.role ? '<div class="thumb-role">' + c.role + '</div>' : '') +
           '</div>';
         b.addEventListener('click', function(){ idx = i; render(); });
         strip.appendChild(b);
