@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-AU">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Heim Method — Evidence-Based Coaching, Gold Coast</title>
-<meta name="description" content="Evidence-based online and in-person personal training with Matthew Heim — Gold Coast, Queensland. One-on-one coaching, in-person PT, and standalone training programmes.">
+<meta name="description" content="Evidence-based online and in-person personal training with Matthew Heim — Gold Coast, Queensland. Coaching for Australia and New Zealand. One-on-one coaching, in-person PT, and standalone training programmes.">
 <meta name="color-scheme" content="dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#060606;
@@ -309,152 +309,374 @@
   .process-list h3{font-size:1.15rem;text-transform:none;letter-spacing:0;font-weight:600;font-family:var(--font-body);}
   .process-list p{color:var(--paper-dim);font-size:0.92rem;margin:8px 0 0;}
 
-  /* ---------- intake form ---------- */
+  /* ---------- results / transformations ---------- */
+  .results{
+    background:var(--card);
+    border-top:1px solid var(--card-line);
+    border-bottom:1px solid var(--card-line);
+  }
+  .results-intro{max-width:46ch;color:var(--paper-dim);font-size:1rem;margin:0;}
+
+  .transform-shell{
+    margin-top:40px;
+    background:var(--ink);
+    border:1px solid var(--card-line);
+    border-radius:4px;
+    overflow:hidden;
+  }
+
+  .ba-stage{
+    position:relative;
+    background:#000;
+  }
+  .ba-pair{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+  .ba-half{
+    position:relative;
+    aspect-ratio:4/5;
+    overflow:hidden;
+    background:linear-gradient(160deg,#161a29 0%,#0c0e17 100%);
+  }
+  .ba-half img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .ba-half + .ba-half{border-left:1px solid rgba(251,252,248,0.14);}
+  .ba-label{
+    position:absolute;
+    top:14px;
+    left:14px;
+    font-family:var(--font-mono);
+    font-size:0.66rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--paper);
+    background:rgba(6,6,6,0.62);
+    backdrop-filter:blur(6px);
+    padding:6px 12px;
+    border-radius:999px;
+    border:1px solid rgba(251,252,248,0.18);
+  }
+  .ba-empty{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    text-align:center;
+    padding:20px;
+    color:var(--mono-text);
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    letter-spacing:0.06em;
+  }
+  .ba-empty strong{
+    display:block;
+    font-family:var(--font-display);
+    font-size:1.05rem;
+    letter-spacing:0.04em;
+    color:var(--paper-dim);
+    text-transform:uppercase;
+  }
+
+  .duration-pill{
+    position:absolute;
+    left:50%;
+    bottom:18px;
+    transform:translateX(-50%);
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:var(--font-mono);
+    font-size:0.7rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--paper);
+    background:rgba(6,6,6,0.72);
+    backdrop-filter:blur(6px);
+    padding:9px 16px;
+    border-radius:999px;
+    border:1px solid rgba(251,252,248,0.18);
+    white-space:nowrap;
+  }
+  .duration-pill svg{width:13px;height:13px;flex:none;}
+
+  .carousel-btn{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    border:1px solid rgba(251,252,248,0.22);
+    background:rgba(6,6,6,0.6);
+    backdrop-filter:blur(6px);
+    color:var(--paper);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    z-index:2;
+    transition:background .15s ease, border-color .15s ease;
+  }
+  .carousel-btn:hover{background:var(--blue);border-color:var(--blue);}
+  .carousel-btn:focus-visible{outline:2px solid var(--blue-bright);outline-offset:2px;}
+  .carousel-btn.prev{left:14px;}
+  .carousel-btn.next{right:14px;}
+  .carousel-btn svg{width:18px;height:18px;}
+
+  .transform-body{padding:clamp(22px,4vw,34px);}
+  .transform-quote{
+    font-size:clamp(1.02rem,2.1vw,1.28rem);
+    font-style:italic;
+    line-height:1.6;
+    color:var(--paper);
+    margin:0;
+    text-wrap:pretty;
+  }
+  .transform-attr{
+    margin-top:18px;
+    font-family:var(--font-mono);
+    font-size:0.76rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--mono-text);
+  }
+  .transform-attr b{color:var(--paper);font-weight:500;}
+  .transform-body .btn{margin-top:24px;}
+
+  .thumb-strip{
+    display:flex;
+    gap:12px;
+    margin-top:20px;
+    overflow-x:auto;
+    padding-bottom:10px;
+    scrollbar-width:thin;
+  }
+  .thumb{
+    flex:0 0 168px;
+    background:var(--ink);
+    border:1px solid var(--card-line);
+    border-radius:4px;
+    overflow:hidden;
+    cursor:pointer;
+    text-align:left;
+    padding:0;
+    color:inherit;
+    font:inherit;
+    transition:border-color .15s ease, transform .12s ease;
+  }
+  .thumb:hover{border-color:var(--paper-dim);}
+  .thumb:focus-visible{outline:2px solid var(--blue-bright);outline-offset:2px;}
+  .thumb[aria-selected="true"]{border-color:var(--blue-bright);}
+  .thumb-pair{display:grid;grid-template-columns:1fr 1fr;position:relative;}
+  .thumb-half{
+    position:relative;
+    aspect-ratio:4/5;
+    overflow:hidden;
+    background:linear-gradient(160deg,#161a29 0%,#0c0e17 100%);
+  }
+  .thumb-half img{width:100%;height:100%;object-fit:cover;display:block;}
+  .thumb-half + .thumb-half{border-left:1px solid rgba(251,252,248,0.14);}
+  .thumb-tag{
+    position:absolute;
+    top:6px;
+    left:6px;
+    font-family:var(--font-mono);
+    font-size:0.52rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--paper);
+    background:rgba(6,6,6,0.66);
+    padding:3px 6px;
+    border-radius:999px;
+  }
+  .thumb-meta{padding:12px 14px 14px;}
+  .thumb-name{font-family:var(--font-display);text-transform:uppercase;font-weight:700;font-size:1rem;letter-spacing:0.02em;}
+  .thumb-role{font-family:var(--font-mono);font-size:0.66rem;letter-spacing:0.06em;color:var(--mono-text);text-transform:uppercase;margin-top:3px;}
+
+  /* ---------- intake funnel ---------- */
   .intake{
     background:var(--card);
     border-top:1px solid var(--card-line);
     border-bottom:1px solid var(--card-line);
   }
-  .intake-shell{
+  .funnel-shell{
     border:1px solid var(--card-line);
     background:var(--ink);
     max-width:720px;
     margin:0 auto;
+    border-radius:4px;
+    overflow:hidden;
   }
-  .intake-top{
-    padding:28px clamp(20px,4vw,40px) 0;
+  .funnel-top{padding:28px clamp(20px,4vw,40px) 0;}
+  .funnel-bar{
+    height:8px;
+    width:100%;
+    background:var(--card-line);
+    border-radius:999px;
+    overflow:hidden;
   }
-  .progress{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:6px;
-    margin:22px 0 6px;
+  .funnel-bar i{
+    display:block;
+    height:100%;
+    width:12%;
+    background:var(--blue-bright);
+    border-radius:999px;
+    transition:width .3s cubic-bezier(.4,0,.2,1);
   }
-  .progress-seg{height:3px;background:var(--card-line);border-radius:2px;overflow:hidden;}
-  .progress-seg i{display:block;height:100%;width:0%;background:var(--blue-bright);transition:width .25s ease;}
-  .progress-seg.done i{width:100%;}
-  .progress-seg.current i{width:55%;}
-  .progress-labels{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    font-family:var(--font-mono);
-    font-size:0.66rem;
-    letter-spacing:0.05em;
-    text-transform:uppercase;
-    color:var(--mono-text);
-    margin-bottom:8px;
-  }
-  .progress-labels span.active{color:var(--paper);}
-  .step-count{
+  .funnel-count{
+    margin:14px 0 0;
     font-family:var(--font-mono);
     font-size:0.72rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
     color:var(--mono-text);
-    letter-spacing:0.08em;
-    margin-bottom:18px;
+    text-align:center;
   }
 
-  form#intake-form{padding:8px clamp(20px,4vw,40px) 32px;}
-  .step h3{
+  form#intake-form{padding:22px clamp(20px,4vw,40px) 34px;}
+  .fstep{animation:fadeUp .28s ease both;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  .fstep h3{
     font-family:var(--font-display);
     text-transform:uppercase;
-    font-size:1.7rem;
+    font-size:clamp(1.35rem,3.2vw,1.85rem);
     font-weight:800;
-    margin-bottom:6px;
-  }
-  .step > p.hint{color:var(--paper-dim);font-size:0.9rem;margin:0 0 24px;}
-
-  .field{margin-bottom:20px;}
-  .field label.field-label{
-    display:block;
-    font-family:var(--font-mono);
-    font-size:0.72rem;
-    letter-spacing:0.06em;
-    text-transform:uppercase;
-    color:var(--mono-text);
+    text-align:center;
     margin-bottom:8px;
   }
-  .field label.field-label .opt{color:var(--mono-text);text-transform:none;letter-spacing:0;font-family:var(--font-body);}
-  input[type="text"],input[type="email"],input[type="tel"],select,textarea{
-    width:100%;
-    background:var(--card);
-    border:1px solid var(--card-line);
-    color:var(--paper);
-    font-family:var(--font-body);
-    font-size:0.98rem;
-    padding:13px 14px;
-    border-radius:2px;
-    transition:border-color .15s ease;
+  .fstep .hint{
+    color:var(--paper-dim);
+    font-size:0.92rem;
+    margin:0 auto 26px;
+    text-align:center;
+    max-width:46ch;
   }
-  textarea{resize:vertical;min-height:88px;}
-  input:focus-visible,select:focus-visible,textarea:focus-visible{
-    outline:none;
-    border-color:var(--blue-bright);
-  }
-  input::placeholder,textarea::placeholder{color:#5a5e70;}
 
-  .radio-grid,.check-grid{
+  .opt-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-    gap:10px;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:12px;
+    margin-bottom:8px;
   }
-  .opt-card{
+  .opt-grid.one-col{grid-template-columns:1fr;}
+  .opt{
     position:relative;
-    border:1px solid var(--card-line);
-    background:var(--card);
-    border-radius:2px;
-    padding:12px 14px;
+    display:block;
   }
-  .opt-card input{
+  .opt input{
     position:absolute;
     inset:0;
     opacity:0;
-    cursor:pointer;
-    margin:0;
     width:100%;
     height:100%;
+    margin:0;
+    cursor:pointer;
   }
-  .opt-card span{
-    font-size:0.92rem;
+  .opt span{
     display:flex;
     align-items:center;
-    gap:8px;
+    justify-content:center;
+    text-align:center;
+    min-height:56px;
+    padding:12px 20px;
+    background:var(--paper);
+    color:var(--ink);
+    border:1px solid var(--paper);
+    border-radius:999px;
+    font-size:0.98rem;
+    font-weight:500;
+    transition:background .15s ease, color .15s ease, border-color .15s ease, transform .12s ease;
   }
-  .opt-card span::before{
-    content:"";
-    width:14px;height:14px;
-    border:1px solid var(--mono-text);
-    border-radius:50%;
-    flex:none;
-    transition:border-color .15s ease, background .15s ease;
+  .opt:hover span{transform:translateY(-1px);}
+  .opt input:checked + span{
+    background:var(--blue);
+    border-color:var(--blue-bright);
+    color:var(--paper);
   }
-  .check-grid .opt-card span::before{border-radius:3px;}
-  .opt-card:has(input:checked){border-color:var(--blue-bright);background:rgba(19,56,190,0.14);}
-  .opt-card:has(input:checked) span::before{background:var(--blue-bright);border-color:var(--blue-bright);}
-  .opt-card:has(input:focus-visible){outline:2px solid var(--blue-bright);outline-offset:2px;}
+  .opt input:focus-visible + span{outline:2px solid var(--blue-bright);outline-offset:3px;}
 
-  .form-nav{
+  .f-field{margin-bottom:14px;}
+  .f-field label{
+    display:block;
+    font-family:var(--font-mono);
+    font-size:0.7rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--mono-text);
+    margin-bottom:7px;
+  }
+  .funnel-shell input[type="text"],
+  .funnel-shell input[type="email"],
+  .funnel-shell input[type="tel"],
+  .funnel-shell select,
+  .funnel-shell textarea{
+    width:100%;
+    background:var(--paper);
+    border:1px solid var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:1rem;
+    padding:15px 16px;
+    border-radius:10px;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .funnel-shell textarea{resize:vertical;min-height:132px;border-radius:12px;}
+  .funnel-shell input:focus-visible,
+  .funnel-shell select:focus-visible,
+  .funnel-shell textarea:focus-visible{
+    outline:none;
+    border-color:var(--blue-bright);
+    box-shadow:0 0 0 3px rgba(63,94,234,0.28);
+  }
+  .funnel-shell input::placeholder,
+  .funnel-shell textarea::placeholder{color:#8d9099;}
+  .phone-row{display:flex;gap:10px;}
+  .phone-row select{flex:0 0 132px;}
+  .phone-row input{flex:1;}
+
+  .funnel-nav{
     display:flex;
-    justify-content:space-between;
+    justify-content:center;
     align-items:center;
-    gap:16px;
-    margin-top:8px;
-    padding-top:20px;
-    border-top:1px solid var(--card-line);
+    gap:12px;
+    margin-top:26px;
   }
-  .form-nav .btn-ghost:disabled{opacity:0.35;cursor:not-allowed;}
-  .form-nav .spacer{flex:1;}
+  .fbtn{
+    font-family:var(--font-mono);
+    font-size:0.78rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    padding:14px 30px;
+    border-radius:999px;
+    cursor:pointer;
+    border:1px solid transparent;
+    transition:background .15s ease, color .15s ease, border-color .15s ease, transform .12s ease;
+  }
+  .fbtn:focus-visible{outline:2px solid var(--blue-bright);outline-offset:2px;}
+  .fbtn-back{background:transparent;color:var(--paper);border-color:var(--card-line);}
+  .fbtn-back:hover{border-color:var(--paper-dim);}
+  .fbtn-next{background:var(--paper);color:var(--ink);}
+  .fbtn-next:hover:not(:disabled){background:var(--blue);color:var(--paper);}
+  .fbtn-next:active:not(:disabled){transform:translateY(1px);}
+  .fbtn-next:disabled{opacity:0.34;cursor:not-allowed;}
 
-  #confirm{
-    padding:0 clamp(20px,4vw,40px) 36px;
-  }
+  #confirm{padding:0 clamp(20px,4vw,40px) 36px;}
   #confirm .confirm-box{
     border:1px solid var(--blue-bright);
     background:rgba(19,56,190,0.1);
-    padding:22px;
-    border-radius:2px;
+    padding:24px;
+    border-radius:8px;
   }
-  #confirm h3{font-family:var(--font-display);text-transform:uppercase;font-size:1.4rem;margin-bottom:8px;}
-  #confirm p{color:var(--paper-dim);font-size:0.92rem;margin:0 0 14px;}
+  #confirm h3{font-family:var(--font-display);text-transform:uppercase;font-size:1.5rem;margin-bottom:10px;}
+  #confirm p{color:var(--paper-dim);font-size:0.94rem;margin:0 0 16px;}
   #confirm textarea{
     width:100%;
     min-height:180px;
@@ -464,19 +686,14 @@
     font-family:var(--font-mono);
     font-size:0.78rem;
     padding:14px;
-    border-radius:2px;
+    border-radius:8px;
     margin-bottom:14px;
   }
   .copy-status{font-family:var(--font-mono);font-size:0.75rem;color:var(--blue-bright);margin-left:12px;}
 
   /* ---------- personal message bar ---------- */
-  .personal-msg{
-    background:var(--blue);
-  }
-  .personal-msg .wrap{
-    max-width:800px;
-    text-align:center;
-  }
+  .personal-msg{background:var(--blue);}
+  .personal-msg .wrap{max-width:800px;text-align:center;}
   .personal-msg p{
     margin:0;
     color:var(--paper);
@@ -517,10 +734,16 @@
     nav.primary-nav{display:none;}
     .cards{grid-template-columns:1fr;}
     .process-list{grid-template-columns:1fr 1fr;}
+    .carousel-btn{width:38px;height:38px;}
+    .carousel-btn.prev{left:8px;}
+    .carousel-btn.next{right:8px;}
   }
   @media (max-width:520px){
     .process-list{grid-template-columns:1fr;}
     .section-note{text-align:left;}
+    .opt-grid{grid-template-columns:1fr;}
+    .duration-pill{font-size:0.62rem;padding:7px 12px;}
+    .thumb{flex:0 0 140px;}
   }
 </style>
 </head>
@@ -532,6 +755,7 @@
     <nav class="primary-nav">
       <a href="#method">Method</a>
       <a href="#coaching">Coaching</a>
+      <a href="#results">Results</a>
       <a href="#process">Process</a>
       <a href="#start-here">Start Here</a>
     </nav>
@@ -548,7 +772,7 @@
       <p class="hero-sub">Evidence-based programming built around you — not pulled off a shelf. Real periodisation, tempo, and load progression, from a coach who reads your numbers every week and actually changes the plan when they need to.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#start-here">Start Here</a>
-        <span class="hero-meta">5 minutes · straight to Matthew's inbox</span>
+        <span class="hero-meta">2 minutes · straight to Matthew's inbox</span>
       </div>
     </div>
   </section>
@@ -603,6 +827,52 @@
     </div>
   </section>
 
+  <section class="results" id="results">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">The proof</p>
+          <h2>Results that speak for themselves.</h2>
+        </div>
+        <p class="section-note">Real clients, real photos. No filters, no edits, no invented numbers. Pick a name to see the change.</p>
+      </div>
+
+      <div class="transform-shell">
+        <div class="ba-stage">
+          <button type="button" class="carousel-btn prev" id="tPrev" aria-label="Previous client">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          </button>
+          <div class="ba-pair">
+            <div class="ba-half">
+              <span class="ba-label">Before</span>
+              <img id="tBefore" alt="" hidden>
+              <div class="ba-empty" id="tBeforeEmpty"><strong>Before</strong><span>Photo to be added</span></div>
+            </div>
+            <div class="ba-half">
+              <span class="ba-label">After</span>
+              <img id="tAfter" alt="" hidden>
+              <div class="ba-empty" id="tAfterEmpty"><strong>After</strong><span>Photo to be added</span></div>
+            </div>
+          </div>
+          <span class="duration-pill" id="tDuration">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15 14"></polyline></svg>
+            <span id="tDurationText">Duration: —</span>
+          </span>
+          <button type="button" class="carousel-btn next" id="tNext" aria-label="Next client">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </div>
+        <div class="transform-body">
+          <p class="transform-quote" id="tQuote">Client testimonial to be added.</p>
+          <p class="transform-attr" id="tAttr"><b>Client name</b> · Occupation</p>
+          <a class="btn btn-primary" href="#start-here">Start Here</a>
+        </div>
+      </div>
+
+      <div class="thumb-strip" id="thumbStrip" role="tablist" aria-label="Client transformations"></div>
+    </div>
+  </section>
+
   <section id="process">
     <div class="wrap">
       <div class="section-head">
@@ -616,7 +886,7 @@
         <li>
           <span class="step-no">01 — Start Here</span>
           <h3>Fill out the form below</h3>
-          <p>Five minutes. Goals, history, and anything worth knowing before you start.</p>
+          <p>Two minutes. Goals, history, and anything worth knowing before you start.</p>
         </li>
         <li>
           <span class="step-no">02 — Consult</span>
@@ -647,147 +917,150 @@
         <p class="section-note">No obligation. Submitting sends your answers straight to Matthew — nowhere else.</p>
       </div>
 
-      <div class="intake-shell">
-        <div class="intake-top">
-          <div class="progress">
-            <div class="progress-seg current" data-seg="1"><i></i></div>
-            <div class="progress-seg" data-seg="2"><i></i></div>
-            <div class="progress-seg" data-seg="3"><i></i></div>
-            <div class="progress-seg" data-seg="4"><i></i></div>
-          </div>
-          <div class="progress-labels">
-            <span class="active" data-lbl="1">About you</span>
-            <span data-lbl="2">Goals</span>
-            <span data-lbl="3">Health</span>
-            <span data-lbl="4">Submit</span>
-          </div>
-          <p class="step-count" id="stepCount">STEP 01 / 04</p>
+      <div class="funnel-shell">
+        <div class="funnel-top">
+          <div class="funnel-bar"><i id="funnelBar"></i></div>
+          <p class="funnel-count" id="funnelCount">Question 1 of 8</p>
         </div>
 
         <form id="intake-form" novalidate>
 
-          <div class="step" data-step="1">
-            <h3>About you</h3>
-            <p class="hint">So Matthew knows who he's talking to and how to reach you.</p>
-            <div class="field">
-              <label class="field-label" for="fullName">Full name</label>
+          <div class="fstep" data-step="1">
+            <h3>What are you here to do?</h3>
+            <p class="hint">Pick the one that's closest. You can explain properly in a moment.</p>
+            <div class="opt-grid">
+              <label class="opt"><input type="radio" name="Goal" value="Build muscle &amp; strength" required><span>Build muscle &amp; strength</span></label>
+              <label class="opt"><input type="radio" name="Goal" value="Lose fat &amp; get lean"><span>Lose fat &amp; get lean</span></label>
+              <label class="opt"><input type="radio" name="Goal" value="Athletic performance (MMA, BJJ, sport)"><span>Athletic performance</span></label>
+              <label class="opt"><input type="radio" name="Goal" value="Move better &amp; train pain-free"><span>Move better &amp; train pain-free</span></label>
+              <label class="opt"><input type="radio" name="Goal" value="Structure &amp; accountability"><span>Structure &amp; accountability</span></label>
+              <label class="opt"><input type="radio" name="Goal" value="Not sure yet"><span>Not sure yet</span></label>
+            </div>
+          </div>
+
+          <div class="fstep" data-step="2" hidden>
+            <h3>How old are you?</h3>
+            <p class="hint">This changes how recovery and load progression get programmed.</p>
+            <div class="opt-grid">
+              <label class="opt"><input type="radio" name="Age" value="Under 18" required><span>Under 18</span></label>
+              <label class="opt"><input type="radio" name="Age" value="18-24"><span>18–24</span></label>
+              <label class="opt"><input type="radio" name="Age" value="25-34"><span>25–34</span></label>
+              <label class="opt"><input type="radio" name="Age" value="35-44"><span>35–44</span></label>
+              <label class="opt"><input type="radio" name="Age" value="45+"><span>45+</span></label>
+            </div>
+          </div>
+
+          <div class="fstep" data-step="3" hidden>
+            <h3>How do you identify?</h3>
+            <p class="hint">Used for programming and nutrition targets only.</p>
+            <div class="opt-grid">
+              <label class="opt"><input type="radio" name="Identify" value="Male" required><span>Male</span></label>
+              <label class="opt"><input type="radio" name="Identify" value="Female"><span>Female</span></label>
+              <label class="opt"><input type="radio" name="Identify" value="Prefer not to say"><span>Prefer not to say</span></label>
+            </div>
+          </div>
+
+          <div class="fstep" data-step="4" hidden>
+            <h3>Where would you train?</h3>
+            <p class="hint">In-person is Gold Coast only. Everything else runs online.</p>
+            <div class="opt-grid">
+              <label class="opt"><input type="radio" name="Location" value="In person - Gold Coast, QLD" required><span>In person — Gold Coast</span></label>
+              <label class="opt"><input type="radio" name="Location" value="Online - Australia"><span>Online — Australia</span></label>
+              <label class="opt"><input type="radio" name="Location" value="Online - New Zealand"><span>Online — New Zealand</span></label>
+              <label class="opt"><input type="radio" name="Location" value="Not sure yet"><span>Not sure yet</span></label>
+            </div>
+          </div>
+
+          <div class="fstep" data-step="5" hidden>
+            <h3>How many days a week can you realistically train?</h3>
+            <p class="hint">Be honest, not aspirational — the programme gets built around this number.</p>
+            <div class="opt-grid">
+              <label class="opt"><input type="radio" name="Training days" value="2 days" required><span>2 days</span></label>
+              <label class="opt"><input type="radio" name="Training days" value="3 days"><span>3 days</span></label>
+              <label class="opt"><input type="radio" name="Training days" value="4 days"><span>4 days</span></label>
+              <label class="opt"><input type="radio" name="Training days" value="5+ days"><span>5+ days</span></label>
+            </div>
+          </div>
+
+          <div class="fstep" data-step="6" hidden>
+            <h3>What made you fill this out today — not last week, today?</h3>
+            <p class="hint">Be honest. This is the part Matthew actually reads.</p>
+            <textarea name="Why today" id="whyToday" placeholder="What changed, what's been building up, or what finally tipped it over." required></textarea>
+          </div>
+
+          <div class="fstep" data-step="7" hidden>
+            <h3>What are you ready to commit — and what might get in the way?</h3>
+            <p class="hint">Results take 12–16 weeks of consistency. Tell me what you can give it, and what's realistically going to make that hard.</p>
+            <textarea name="Commitment" id="commitment" placeholder="Time you can give it, what's derailed you before, work or family constraints." required></textarea>
+          </div>
+
+          <div class="fstep" data-step="8" hidden>
+            <h3>Where do I send it?</h3>
+            <p class="hint">Straight to Matthew — nowhere else, no list, no automation.</p>
+            <div class="f-field">
+              <label for="fullName">Full name</label>
               <input type="text" id="fullName" name="Full name" autocomplete="name" placeholder="Jane Smith" required>
             </div>
-            <div class="field">
-              <label class="field-label" for="email">Email</label>
+            <div class="f-field">
+              <label for="email">Email</label>
               <input type="email" id="email" name="Email" autocomplete="email" placeholder="jane@email.com" required>
             </div>
-            <div class="field">
-              <label class="field-label" for="phone">Phone</label>
-              <input type="tel" id="phone" name="Phone" autocomplete="tel" placeholder="04xx xxx xxx" required>
-            </div>
-            <div class="field">
-              <label class="field-label">Where would you train?</label>
-              <div class="radio-grid">
-                <label class="opt-card"><input type="radio" name="Location" value="Gold Coast — in person" required><span>Gold Coast, in person</span></label>
-                <label class="opt-card"><input type="radio" name="Location" value="Online"><span>Online</span></label>
-                <label class="opt-card"><input type="radio" name="Location" value="Not sure yet"><span>Not sure yet</span></label>
+            <div class="f-field">
+              <label for="phone">Phone</label>
+              <div class="phone-row">
+                <select id="dialCode" name="Dial code" aria-label="Country dialling code">
+                  <option value="+61" selected>🇦🇺 +61</option>
+                  <option value="+64">🇳🇿 +64</option>
+                  <option value="+other">Other</option>
+                </select>
+                <input type="tel" id="phone" name="Phone" autocomplete="tel" placeholder="4xx xxx xxx" required>
               </div>
             </div>
-          </div>
-
-          <div class="step" data-step="2" hidden>
-            <h3>Goals &amp; experience</h3>
-            <p class="hint">This shapes the whole programme — be specific if you can.</p>
-            <div class="field">
-              <label class="field-label">Primary goal</label>
-              <div class="radio-grid">
-                <label class="opt-card"><input type="radio" name="Primary goal" value="Build strength" required><span>Build strength</span></label>
-                <label class="opt-card"><input type="radio" name="Primary goal" value="Fat loss / recomposition"><span>Fat loss / recomp</span></label>
-                <label class="opt-card"><input type="radio" name="Primary goal" value="Athletic performance"><span>Athletic performance</span></label>
-                <label class="opt-card"><input type="radio" name="Primary goal" value="Rehab / pain-free movement"><span>Rehab / pain-free movement</span></label>
-                <label class="opt-card"><input type="radio" name="Primary goal" value="General fitness & health"><span>General fitness &amp; health</span></label>
-              </div>
-            </div>
-            <div class="field">
-              <label class="field-label">Training experience</label>
-              <div class="radio-grid">
-                <label class="opt-card"><input type="radio" name="Training experience" value="New to structured training" required><span>New to structured training</span></label>
-                <label class="opt-card"><input type="radio" name="Training experience" value="1–3 years"><span>1–3 years</span></label>
-                <label class="opt-card"><input type="radio" name="Training experience" value="3+ years"><span>3+ years</span></label>
-              </div>
-            </div>
-            <div class="field">
-              <label class="field-label" for="frequency">Current training frequency</label>
-              <select id="frequency" name="Current frequency" required>
-                <option value="" disabled selected>Select one</option>
-                <option>Not currently training</option>
-                <option>1–2 days / week</option>
-                <option>3–4 days / week</option>
-                <option>5+ days / week</option>
+            <div class="f-field">
+              <label for="country">Country</label>
+              <select id="country" name="Country" required>
+                <option value="Australia" selected>Australia</option>
+                <option value="New Zealand">New Zealand</option>
+                <option value="Other">Other</option>
               </select>
             </div>
-          </div>
-
-          <div class="step" data-step="3" hidden>
-            <h3>Health &amp; history</h3>
-            <p class="hint">Nothing here rules you out — it just tells Matthew what to build around.</p>
-            <div class="field">
-              <label class="field-label">Any current injuries, pain, or areas to work around?</label>
-              <div class="check-grid">
-                <label class="opt-card"><input type="checkbox" name="Flag — Lower back" value="Lower back"><span>Lower back</span></label>
-                <label class="opt-card"><input type="checkbox" name="Flag — Knee" value="Knee"><span>Knee</span></label>
-                <label class="opt-card"><input type="checkbox" name="Flag — Shoulder" value="Shoulder"><span>Shoulder</span></label>
-                <label class="opt-card"><input type="checkbox" name="Flag — None" value="None currently"><span>None currently</span></label>
-              </div>
-            </div>
-            <div class="field">
-              <label class="field-label" for="healthNotes">Tell Matthew what's going on <span class="opt">(optional)</span></label>
-              <textarea id="healthNotes" name="Health notes" placeholder="Area, how long it's been an issue, anything a physio or doctor has said..."></textarea>
-            </div>
-          </div>
-
-          <div class="step" data-step="4" hidden>
-            <h3>Preferences &amp; submit</h3>
-            <p class="hint">Last step — this is what actually gets sent.</p>
-            <div class="field">
-              <label class="field-label" for="availability">Availability <span class="opt">(optional)</span></label>
-              <input type="text" id="availability" name="Availability" placeholder="e.g. weekday mornings, Tue/Thu evenings">
-            </div>
-            <div class="field">
-              <label class="field-label" for="hearAbout">How did you hear about The Heim Method?</label>
-              <select id="hearAbout" name="Heard via">
-                <option value="" disabled selected>Select one</option>
-                <option>Instagram</option>
-                <option>TikTok</option>
-                <option>Referral from a friend/client</option>
-                <option>Google search</option>
-                <option>Other</option>
+            <div class="f-field">
+              <label for="timezone">Time zone</label>
+              <select id="timezone" name="Time zone" required>
+                <option value="AEST/AEDT - QLD, NSW, VIC, TAS, ACT" selected>AEST / AEDT — QLD, NSW, VIC, TAS, ACT</option>
+                <option value="ACST/ACDT - SA, NT">ACST / ACDT — SA, NT</option>
+                <option value="AWST - WA">AWST — WA</option>
+                <option value="NZST/NZDT - New Zealand">NZST / NZDT — New Zealand</option>
+                <option value="Other">Other</option>
               </select>
             </div>
-            <div class="field">
-              <label class="field-label" for="extra">Anything else Matthew should know? <span class="opt">(optional)</span></label>
-              <textarea id="extra" name="Additional notes" placeholder="Questions, timelines, anything else..."></textarea>
+            <div class="f-field">
+              <label for="instagram">Instagram handle <span style="text-transform:none;letter-spacing:0;font-family:var(--font-body);">(optional)</span></label>
+              <input type="text" id="instagram" name="Instagram" placeholder="@yourhandle">
+            </div>
+            <div class="f-field">
+              <label for="extra">Anything else Matthew should know? <span style="text-transform:none;letter-spacing:0;font-family:var(--font-body);">(injuries, history, questions)</span></label>
+              <textarea id="extra" name="Anything else" placeholder="Injuries or pain, past training history, or anything you want answered on the call." style="min-height:110px;"></textarea>
             </div>
           </div>
 
-          <div class="form-nav">
-            <button type="button" class="btn btn-ghost" id="prevBtn" disabled>Back</button>
-            <span class="spacer"></span>
-            <button type="button" class="btn btn-primary" id="nextBtn">Continue</button>
-            <button type="submit" class="btn btn-primary" id="submitBtn" hidden>Send application</button>
+          <div class="funnel-nav">
+            <button type="button" class="fbtn fbtn-back" id="prevBtn" hidden>← Back</button>
+            <button type="button" class="fbtn fbtn-next" id="nextBtn" disabled>Next →</button>
+            <button type="submit" class="fbtn fbtn-next" id="submitBtn" hidden>Send application</button>
           </div>
         </form>
 
         <div id="confirm" hidden>
-          <div class="confirm-box" id="confirmSuccess" hidden>
-  <h3>You're in.</h3>
-  <p>Your application just landed straight in Matthew's inbox — no extra steps needed. He reads every one personally and will get back to you soon.</p>
-<a id="calendlyBtn" class="btn btn-primary" href="https://calendly.com/theheimmethod/30min" target="_blank" rel="noopener">Book a call with Matthew</a>
-</div>
-<div class="confirm-box" id="confirmFallback" hidden>
-  <h3>Almost done.</h3>
-  <p>Something went wrong sending this automatically. Copy your answers below and send them by email or Instagram DM instead.</p>
-  <textarea id="confirmText" readonly></textarea>
-  <a class="btn btn-primary" href="#" id="mailtoRetry">Open email app</a>
-  <button type="button" class="btn btn-ghost" id="copyBtn">Copy answers</button>
-  <span class="copy-status" id="copyStatus"></span>
-</div>        </div>
+          <div class="confirm-box">
+            <h3>Almost done.</h3>
+            <p>Your email app should be opening now, addressed to Matthew with everything filled in — just hit send. If nothing opened, copy your answers below and send them by email or Instagram DM instead.</p>
+            <textarea id="confirmText" readonly></textarea>
+            <a class="btn btn-primary" href="#" id="mailtoRetry">Open email app</a>
+            <button type="button" class="btn btn-ghost" id="copyBtn">Copy answers</button>
+            <span class="copy-status" id="copyStatus"></span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -826,69 +1099,147 @@
     if(track){ track.innerHTML += track.innerHTML; }
   })();
 
-  // ---- multi-step form ----
+  /* ============================================================
+     CLIENT TRANSFORMATIONS
+     ------------------------------------------------------------
+     To add a client: fill in the fields below.
+       before / after : path to the image, e.g. "img/mitch-before.jpg"
+       name           : first name
+       role           : their occupation, e.g. "Electrician"
+       duration       : e.g. "12 weeks"
+       quote          : the client's own words (leave "" if none yet)
+     Leave before/after as "" and the slot shows a placeholder.
+     ============================================================ */
+  var CLIENTS = [
+    { name:"", role:"", duration:"", quote:"", before:"", after:"" },
+    { name:"", role:"", duration:"", quote:"", before:"", after:"" },
+    { name:"", role:"", duration:"", quote:"", before:"", after:"" },
+    { name:"", role:"", duration:"", quote:"", before:"", after:"" },
+    { name:"", role:"", duration:"", quote:"", before:"", after:"" },
+    { name:"", role:"", duration:"", quote:"", before:"", after:"" }
+  ];
+
+  (function(){
+    var idx = 0;
+    var beforeImg = document.getElementById('tBefore');
+    var afterImg = document.getElementById('tAfter');
+    var beforeEmpty = document.getElementById('tBeforeEmpty');
+    var afterEmpty = document.getElementById('tAfterEmpty');
+    var durationText = document.getElementById('tDurationText');
+    var quoteEl = document.getElementById('tQuote');
+    var attrEl = document.getElementById('tAttr');
+    var strip = document.getElementById('thumbStrip');
+
+    function setHalf(img, empty, src, alt){
+      if(src){
+        img.src = src; img.alt = alt; img.hidden = false; empty.hidden = true;
+      } else {
+        img.removeAttribute('src'); img.hidden = true; empty.hidden = false;
+      }
+    }
+
+    function render(){
+      var c = CLIENTS[idx];
+      var who = c.name || 'Client name';
+      setHalf(beforeImg, beforeEmpty, c.before, who + ' before coaching');
+      setHalf(afterImg, afterEmpty, c.after, who + ' after coaching');
+      durationText.textContent = 'Duration: ' + (c.duration || '—');
+      quoteEl.textContent = c.quote ? '“' + c.quote + '”' : 'Client testimonial to be added.';
+      attrEl.innerHTML = '<b>' + who + '</b> · ' + (c.role || 'Occupation');
+      Array.prototype.forEach.call(strip.children, function(el, i){
+        el.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+      });
+    }
+
+    function buildStrip(){
+      CLIENTS.forEach(function(c, i){
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'thumb';
+        b.setAttribute('role','tab');
+        b.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+        var beforeInner = c.before ? '<img src="' + c.before + '" alt="">' : '';
+        var afterInner = c.after ? '<img src="' + c.after + '" alt="">' : '';
+        b.innerHTML =
+          '<div class="thumb-pair">' +
+            '<div class="thumb-half"><span class="thumb-tag">Before</span>' + beforeInner + '</div>' +
+            '<div class="thumb-half"><span class="thumb-tag">After</span>' + afterInner + '</div>' +
+          '</div>' +
+          '<div class="thumb-meta">' +
+            '<div class="thumb-name">' + (c.name || 'Client ' + (i + 1)) + '</div>' +
+            '<div class="thumb-role">' + (c.role || 'Occupation') + '</div>' +
+          '</div>';
+        b.addEventListener('click', function(){ idx = i; render(); });
+        strip.appendChild(b);
+      });
+    }
+
+    document.getElementById('tPrev').addEventListener('click', function(){
+      idx = (idx - 1 + CLIENTS.length) % CLIENTS.length; render();
+    });
+    document.getElementById('tNext').addEventListener('click', function(){
+      idx = (idx + 1) % CLIENTS.length; render();
+    });
+
+    buildStrip();
+    render();
+  })();
+
+  /* ---------------- multi-step funnel form ---------------- */
   var form = document.getElementById('intake-form');
-  var steps = Array.prototype.slice.call(form.querySelectorAll('.step'));
+  var steps = Array.prototype.slice.call(form.querySelectorAll('.fstep'));
   var totalSteps = steps.length;
   var current = 1;
 
   var prevBtn = document.getElementById('prevBtn');
   var nextBtn = document.getElementById('nextBtn');
   var submitBtn = document.getElementById('submitBtn');
-  var stepCount = document.getElementById('stepCount');
-  var segs = Array.prototype.slice.call(document.querySelectorAll('.progress-seg'));
-  var labels = Array.prototype.slice.call(document.querySelectorAll('.progress-labels span'));
+  var bar = document.getElementById('funnelBar');
+  var countEl = document.getElementById('funnelCount');
+
+  function currentStepEl(){ return steps[current - 1]; }
+
+  function stepAnswered(){
+    var el = currentStepEl();
+    var radios = el.querySelectorAll('input[type="radio"]');
+    if(radios.length){
+      return Array.prototype.some.call(radios, function(r){ return r.checked; });
+    }
+    var required = el.querySelectorAll('[required]');
+    for(var i = 0; i < required.length; i++){
+      if(!required[i].value.trim()) return false;
+    }
+    return true;
+  }
+
+  function syncButtons(){
+    var ok = stepAnswered();
+    nextBtn.disabled = !ok;
+    submitBtn.disabled = !ok;
+  }
 
   function renderStep(){
     steps.forEach(function(s){
       s.hidden = parseInt(s.getAttribute('data-step'), 10) !== current;
     });
-    segs.forEach(function(seg){
-      var n = parseInt(seg.getAttribute('data-seg'), 10);
-      seg.classList.remove('done','current');
-      if(n < current) seg.classList.add('done');
-      else if(n === current) seg.classList.add('current');
-    });
-    labels.forEach(function(l){
-      var n = parseInt(l.getAttribute('data-lbl'), 10);
-      l.classList.toggle('active', n <= current);
-    });
-    stepCount.textContent = 'STEP 0' + current + ' / 0' + totalSteps;
-    prevBtn.disabled = current === 1;
+    bar.style.width = Math.round((current / totalSteps) * 100) + '%';
+    countEl.textContent = 'Question ' + current + ' of ' + totalSteps;
+    prevBtn.hidden = current === 1;
     nextBtn.hidden = current === totalSteps;
     submitBtn.hidden = current !== totalSteps;
+    syncButtons();
   }
 
-  function currentStepEl(){
-    return steps[current - 1];
-  }
-
-  function stepIsValid(){
-    var el = currentStepEl();
-    var inputs = el.querySelectorAll('input[required], select[required], textarea[required]');
-    for(var i = 0; i < inputs.length; i++){
-      if(!inputs[i].checkValidity()){
-        inputs[i].reportValidity();
-        return false;
-      }
-    }
-    return true;
-  }
+  form.addEventListener('change', syncButtons);
+  form.addEventListener('input', syncButtons);
 
   nextBtn.addEventListener('click', function(){
-    if(!stepIsValid()) return;
-    if(current < totalSteps){
-      current += 1;
-      renderStep();
-      currentStepEl().scrollIntoView({block:'nearest'});
-    }
+    if(!stepAnswered()) return;
+    if(current < totalSteps){ current += 1; renderStep(); }
   });
 
   prevBtn.addEventListener('click', function(){
-    if(current > 1){
-      current -= 1;
-      renderStep();
-    }
+    if(current > 1){ current -= 1; renderStep(); }
   });
 
   function buildSummary(){
@@ -902,54 +1253,24 @@
   }
 
   function buildMailto(){
-    var name = form.querySelector('#fullName').value || 'New applicant';
+    var name = document.getElementById('fullName').value || 'New applicant';
     var subject = 'Start Here application — ' + name;
     var body = buildSummary();
     return 'mailto:theheimmethod@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
   }
 
-function showConfirm(success){
-    document.getElementById('confirmSuccess').hidden = !success;
-    document.getElementById('confirmFallback').hidden = success;
-    if(!success){
-      var mailtoUrl = buildMailto();
-      document.getElementById('confirmText').value = buildSummary();
-      document.getElementById('mailtoRetry').setAttribute('href', mailtoUrl);
-    } else {
-      var calName = form.querySelector('#fullName').value || '';
-      var calEmail = form.querySelector('#email').value || '';
-      document.getElementById('calendlyBtn').setAttribute('href', 'https://calendly.com/theheimmethod/30min?name=' + encodeURIComponent(calName) + '&email=' + encodeURIComponent(calEmail));
-    }
-    document.getElementById('confirm').hidden = false;
-    document.getElementById('confirm').scrollIntoView({block:'start', behavior:'smooth'});
-  }
-
   form.addEventListener('submit', function(e){
     e.preventDefault();
-    if(!stepIsValid()) return;
+    if(!stepAnswered()) return;
 
-    var fd = new FormData(form);
-    fd.append('access_key', '435915d9-6ccc-49b7-abba-eaec795c83fb');
-    fd.append('subject', 'Start Here application — ' + (form.querySelector('#fullName').value || 'New applicant'));
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending…';
-
-    fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Accept': 'application/json' },
-      body: fd
-    }).then(function(res){ return res.json(); }).then(function(data){
-      showConfirm(!!data.success);
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Send application';
-    }).catch(function(){
-      showConfirm(false);
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Send application';
-    });
+    var mailtoUrl = buildMailto();
+    document.getElementById('confirmText').value = buildSummary();
+    document.getElementById('mailtoRetry').setAttribute('href', mailtoUrl);
+    document.getElementById('confirm').hidden = false;
+    window.location.href = mailtoUrl;
+    document.getElementById('confirm').scrollIntoView({block:'start', behavior:'smooth'});
   });
-  
+
   document.getElementById('copyBtn').addEventListener('click', function(){
     var status = document.getElementById('copyStatus');
     var text = document.getElementById('confirmText').value;
