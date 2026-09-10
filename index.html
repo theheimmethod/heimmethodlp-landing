@@ -328,13 +328,11 @@
     margin-right:auto;
   }
 
-  /* the photo pair is deliberately capped so it never blows up on wide screens */
+  /* the pair fills the card edge to edge — the shell width is what keeps it compact */
   .ba-stage{
     position:relative;
     background:#000;
     width:100%;
-    max-width:560px;
-    margin:0 auto;
   }
   .ba-pair{
     display:grid;
@@ -507,6 +505,94 @@
   .thumb-meta{padding:12px 14px 14px;}
   .thumb-name{font-family:var(--font-display);text-transform:uppercase;font-weight:700;font-size:1rem;letter-spacing:0.02em;}
   .thumb-role{font-family:var(--font-mono);font-size:0.66rem;letter-spacing:0.06em;color:var(--mono-text);text-transform:uppercase;margin-top:3px;}
+
+  /* ---------- guarantee ---------- */
+  .guarantee{
+    background:var(--card);
+    border-top:1px solid var(--card-line);
+    border-bottom:1px solid var(--card-line);
+  }
+  .g-inner{max-width:640px;}
+  .g-head{
+    margin-top:14px;
+    font-size:clamp(2rem,4.6vw,3.1rem);
+    line-height:1.02;
+  }
+  .g-head em{
+    font-style:italic;
+    text-transform:none;
+    font-family:var(--font-body);
+    font-weight:500;
+    color:var(--blue-bright);
+    letter-spacing:0;
+  }
+  .g-body{
+    margin-top:22px;
+    color:var(--paper-dim);
+    font-size:1.04rem;
+    max-width:52ch;
+  }
+
+  .tick-list{
+    list-style:none;
+    margin:32px 0 0;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+  }
+  .tick-list li{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+  }
+  .tick-list svg{
+    width:20px;
+    height:20px;
+    flex:none;
+    margin-top:3px;
+    color:var(--blue-bright);
+  }
+  .tick-list strong{
+    display:block;
+    font-weight:600;
+    font-size:1.06rem;
+    color:var(--paper);
+  }
+  .tick-list span{
+    display:block;
+    margin-top:3px;
+    color:var(--mono-text);
+    font-size:0.92rem;
+  }
+
+  .g-note{
+    margin:28px 0 0;
+    padding-top:24px;
+    border-top:1px solid var(--card-line);
+    color:var(--mono-text);
+    font-size:0.94rem;
+  }
+  .g-cta{
+    margin-top:26px;
+    background:var(--paper);
+    color:var(--ink);
+    padding:16px 26px;
+    border-radius:4px;
+  }
+  .g-cta:hover{background:var(--blue);color:var(--paper);}
+  .g-free{
+    margin:20px 0 0;
+    font-weight:600;
+    color:var(--paper);
+    font-size:0.98rem;
+  }
+  .g-fine{
+    margin:10px 0 0;
+    color:var(--mono-text);
+    font-size:0.86rem;
+    max-width:56ch;
+  }
 
   /* ---------- intake funnel ---------- */
   .intake{
@@ -763,7 +849,7 @@
       <a href="#method">Method</a>
       <a href="#coaching">Coaching</a>
       <a href="#results">Results</a>
-      <a href="#process">Process</a>
+      <a href="#guarantee">Guarantee</a>
       <a href="#start-here">Start Here</a>
     </nav>
     <a class="btn btn-primary header-cta" href="#start-here">Start Here</a>
@@ -776,10 +862,10 @@
     <div class="wrap hero-grid">
       <p class="eyebrow">Gold Coast, QLD — Coaching online &amp; in person</p>
       <h1>Train with a <em>method</em>, not a guess.</h1>
-      <p class="hero-sub">Evidence-based programming built around you — not pulled off a shelf. Real periodisation, tempo, and load progression, from a coach who reads your numbers every week and actually changes the plan when they need to.</p>
+      <p class="hero-sub">Personalised 1-on-1 training and nutrition built around your goals. Understanding your preferences and lifestyle.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#start-here">Start Here</a>
-        <span class="hero-meta">2 minutes · straight to Matthew's inbox</span>
+        <span class="hero-meta">Straight to Matthew</span>
       </div>
     </div>
   </section>
@@ -872,7 +958,7 @@
         <div class="transform-body">
           <p class="transform-quote" id="tQuote">Client testimonial to be added.</p>
           <p class="transform-attr" id="tAttr"><b>Client name</b> · Occupation</p>
-          <a class="btn btn-primary" href="#start-here">Start Here</a>
+          <a class="btn btn-primary" href="#start-here">Apply for coaching →</a>
         </div>
       </div>
 
@@ -880,37 +966,44 @@
     </div>
   </section>
 
-  <section id="process">
+  <section class="guarantee" id="guarantee">
     <div class="wrap">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">How it actually works</p>
-          <h2>The client journey.</h2>
-        </div>
-        <p class="section-note">Consultative, not pushy. If it's not a fit, you'll hear that too.</p>
+      <div class="g-inner">
+        <p class="eyebrow">My guarantee</p>
+        <h2 class="g-head">A 180° transformation by week 12,<br><em>or your money back.</em></h2>
+        <p class="g-body">I know you'll be able to transform with my proven system. If you haven't visibly transformed by week 12, I'll completely refund you. The result is on me.</p>
+
+        <ul class="tick-list">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <div>
+              <strong>Less body fat, more muscle</strong>
+              <span>Weekly check-ins, weigh-ins and progress photos</span>
+            </div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <div>
+              <strong>Stronger on your main lifts</strong>
+              <span>Every session logged, load and RPE reviewed</span>
+            </div>
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <div>
+              <strong>Better conditioning and movement</strong>
+              <span>Your week 1 benchmark, retested at week 12</span>
+            </div>
+          </li>
+        </ul>
+
+        <p class="g-note">Every one measured at your week 12 check-in, against the baseline taken in week 1.</p>
+
+        <a class="btn g-cta" href="#start-here">Apply for coaching →</a>
+
+        <p class="g-free">Free to apply, and no obligation.</p>
+        <p class="g-fine">Refund applies to clients who complete every scheduled check-in and follow the training and nutrition plan built for them.</p>
       </div>
-      <ol class="process-list">
-        <li>
-          <span class="step-no">01 — Start Here</span>
-          <h3>Fill out the form below</h3>
-          <p>Two minutes. Goals, history, and anything worth knowing before you start.</p>
-        </li>
-        <li>
-          <span class="step-no">02 — Consult</span>
-          <h3>A short conversation</h3>
-          <p>Matthew reads your application and follows up to understand what's actually going on.</p>
-        </li>
-        <li>
-          <span class="step-no">03 — Programme</span>
-          <h3>Your plan gets built</h3>
-          <p>Periodised, evidence-based, and specific to your goals — not a template with your name on it.</p>
-        </li>
-        <li>
-          <span class="step-no">04 — Check-ins</span>
-          <h3>Weekly, every week</h3>
-          <p>Load, RPE and progress get reviewed and the programme gets adjusted accordingly.</p>
-        </li>
-      </ol>
     </div>
   </section>
 
@@ -1117,12 +1210,14 @@
        quote          : the client's own words (leave "" if none yet)
      Leave before/after as "" and the slot shows a placeholder.
      ============================================================ */
+  var FILLER = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.";
+
   var CLIENTS = [
-    { name:"", role:"", duration:"", quote:"", before:"img/client1-before.webp", after:"img/client1-after.webp" },
-    { name:"", role:"", duration:"", quote:"", before:"img/client2-before.webp", after:"img/client2-after.webp" },
-    { name:"", role:"", duration:"", quote:"", before:"img/client3-before.webp", after:"img/client3-after.webp" },
-    { name:"", role:"", duration:"", quote:"", before:"img/client4-before.webp", after:"img/client4-after.webp" },
-    { name:"", role:"", duration:"", quote:"", before:"img/client5-before.webp", after:"img/client5-after.webp" }
+    { name:"Client 01", role:"Occupation", duration:"XX weeks", quote:FILLER, before:"img/client1-before.webp", after:"img/client1-after.webp" },
+    { name:"Client 02", role:"Occupation", duration:"XX weeks", quote:FILLER, before:"img/client2-before.webp", after:"img/client2-after.webp" },
+    { name:"Client 03", role:"Occupation", duration:"XX weeks", quote:FILLER, before:"img/client3-before.webp", after:"img/client3-after.webp" },
+    { name:"Client 04", role:"Occupation", duration:"XX weeks", quote:FILLER, before:"img/client4-before.webp", after:"img/client4-after.webp" },
+    { name:"Client 05", role:"Occupation", duration:"XX weeks", quote:FILLER, before:"img/client5-before.webp", after:"img/client5-after.webp" }
   ];
 
   (function(){
