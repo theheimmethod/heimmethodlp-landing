@@ -506,6 +506,68 @@
   .thumb-name{font-family:var(--font-display);text-transform:uppercase;font-weight:700;font-size:1rem;letter-spacing:0.02em;}
   .thumb-role{font-family:var(--font-mono);font-size:0.66rem;letter-spacing:0.06em;color:var(--mono-text);text-transform:uppercase;margin-top:3px;}
 
+  /* ---------- full-bleed photo bands ---------- */
+  .photo-band{
+    position:relative;
+    width:100%;
+    overflow:hidden;
+    border-top:1px solid var(--card-line);
+    border-bottom:1px solid var(--card-line);
+    background:#000;
+    line-height:0;
+  }
+  .photo-band img{
+    display:block;
+    width:100%;
+    height:auto;
+    max-height:min(62vh,560px);
+    object-fit:cover;
+    object-position:center 35%;
+  }
+  .photo-band::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to bottom,rgba(6,6,6,0.30) 0%,rgba(6,6,6,0) 32%,rgba(6,6,6,0) 58%,rgba(6,6,6,0.62) 100%);
+    pointer-events:none;
+  }
+  .band-pill{
+    position:absolute;
+    left:clamp(20px,5vw,56px);
+    bottom:clamp(20px,4vw,40px);
+    z-index:2;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-family:var(--font-mono);
+    font-size:clamp(0.68rem,1.6vw,0.8rem);
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    line-height:1;
+    background:var(--blue);
+    color:var(--paper);
+    padding:14px 22px;
+    border-radius:999px;
+  }
+
+  /* two-up portrait strip, sits flush under the coaching cards */
+  .photo-duo{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1px;
+    background:var(--card-line);
+    border:1px solid var(--card-line);
+    border-top:none;
+    line-height:0;
+  }
+  .photo-duo img{
+    display:block;
+    width:100%;
+    aspect-ratio:4/5;
+    object-fit:cover;
+    object-position:center 30%;
+  }
+
   /* ---------- guarantee ---------- */
   .guarantee{
     background:var(--card);
@@ -888,6 +950,13 @@
     </div>
   </div>
 
+  <div class="photo-band">
+    <picture>
+      <source media="(max-width:700px)" srcset="img/shot1-tall.webp">
+      <img src="img/shot1-wide.webp" alt="Training session inside the cage" width="1600" height="900">
+    </picture>
+  </div>
+
   <section id="coaching">
     <div class="wrap">
       <div class="section-head">
@@ -916,6 +985,10 @@
           <p>16 Week Training programme.</p>
           <span class="tag">Monthly · Self-led with support</span>
         </div>
+      </div>
+      <div class="photo-duo">
+        <img src="img/shot3-portrait.webp" alt="Strength work in the gym" width="760" height="950" loading="lazy">
+        <img src="img/shot5-portrait.webp" alt="Loading a barbell between sets" width="760" height="950" loading="lazy">
       </div>
     </div>
   </section>
@@ -966,6 +1039,13 @@
     </div>
   </section>
 
+  <div class="photo-band">
+    <picture>
+      <source media="(max-width:700px)" srcset="img/shot2-tall.webp">
+      <img src="img/shot2-wide.webp" alt="Striking drill during a conditioning session" width="1600" height="900" loading="lazy">
+    </picture>
+  </div>
+
   <section class="guarantee" id="guarantee">
     <div class="wrap">
       <div class="g-inner">
@@ -1006,6 +1086,14 @@
       </div>
     </div>
   </section>
+
+  <div class="photo-band">
+    <picture>
+      <source media="(max-width:700px)" srcset="img/shot4-tall.webp">
+      <img src="img/shot4-wide.webp" alt="Training floor at the gym" width="1600" height="900" loading="lazy">
+    </picture>
+    <span class="band-pill">12 Week Guarantee</span>
+  </div>
 
   <section class="intake" id="start-here">
     <div class="wrap">
