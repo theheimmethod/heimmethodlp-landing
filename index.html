@@ -520,9 +520,10 @@
     display:block;
     width:100%;
     height:auto;
-    max-height:min(62vh,560px);
+    max-height:min(68vh,600px);
     object-fit:cover;
-    object-position:center 35%;
+    /* keep the subject's head in frame when the band crops */
+    object-position:center 22%;
   }
   .photo-band::after{
     content:"";
@@ -563,9 +564,10 @@
   .photo-duo img{
     display:block;
     width:100%;
-    aspect-ratio:4/5;
+    /* fixed band height rather than 4:5 — stops the pair dominating the page */
+    height:clamp(240px,30vw,400px);
     object-fit:cover;
-    object-position:center 30%;
+    object-position:center 22%;
   }
 
   /* ---------- guarantee ---------- */
