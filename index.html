@@ -286,6 +286,76 @@
     border-top:1px dashed var(--card-line);
   }
 
+  /* ---------- split rows: image integrated beside copy ---------- */
+  .split-rows{
+    display:flex;
+    flex-direction:column;
+    gap:1px;
+    background:var(--card-line);
+    border:1px solid var(--card-line);
+  }
+  .split{
+    display:grid;
+    grid-template-columns:minmax(0,0.8fr) minmax(0,1fr);
+    background:var(--ink);
+  }
+  /* alternate the photo to the right without changing source order */
+  .split.flip .split-media{order:2;}
+  .split-media{
+    position:relative;
+    line-height:0;
+    background:#000;
+    overflow:hidden;
+  }
+  .split-media img{
+    display:block;
+    width:100%;
+    /* fixed band height keeps every row the same and stops photos dominating */
+    height:clamp(280px,29vw,410px);
+    object-fit:cover;
+    object-position:center 20%;
+  }
+  .split-copy{
+    padding:clamp(26px,3.2vw,44px);
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    justify-content:center;
+  }
+  .split-media img.pos-mid{object-position:center 42%;}
+  .split-copy .num{font-family:var(--font-mono);font-size:0.78rem;color:var(--red);}
+  .split-copy h3{font-size:clamp(1.3rem,2.3vw,1.7rem);}
+  .split-copy p{color:var(--paper-dim);font-size:0.98rem;margin:0;max-width:46ch;}
+  .split-copy .tag{
+    margin-top:6px;
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    color:var(--mono-text);
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    padding-top:14px;
+    border-top:1px dashed var(--card-line);
+  }
+
+  /* guarantee split: photo column beside the full guarantee copy */
+  .g-split{
+    grid-template-columns:minmax(0,0.68fr) minmax(0,1fr);
+    gap:clamp(28px,4vw,64px);
+    background:transparent;
+    align-items:stretch;
+  }
+  .g-media{border:1px solid var(--card-line);}
+  .g-media{height:100%;}
+  .g-media img{height:100%;min-height:clamp(320px,42vw,560px);object-position:center 16%;}
+  .g-split .g-inner{max-width:none;padding:clamp(4px,1vw,12px) 0;}
+
+  @media (max-width:860px){
+    .split,.g-split{grid-template-columns:1fr;}
+    .split.flip .split-media{order:0;}
+    .split-media img{height:clamp(220px,52vw,320px);}
+    .g-media img{height:auto;min-height:clamp(260px,62vw,380px);}
+  }
+
   /* ---------- process ---------- */
   .process-list{
     list-style:none;
@@ -968,29 +1038,40 @@
         </div>
         <p class="section-note">Every option starts with the same application — Matthew reads it and tells you which fits.</p>
       </div>
-      <div class="cards">
-        <div class="card">
-          <span class="num">01</span>
-          <h3>One-on-one online coaching</h3>
-          <p>A custom programme delivered through the training app I built myself, with weekly check-ins on load, reps, and recovery. Your plan moves as your life does — not the other way round.</p>
-          <span class="tag">Monthly · Anywhere</span>
-        </div>
-        <div class="card">
-          <span class="num">02</span>
-          <h3>In-person PT (only if you're in the Gold Coast)</h3>
-          <p>One-to-one sessions on the Gold Coast. Technique corrected in real time, no wasted reps, no guessing whether you're doing it right.</p>
-          <span class="tag">Sessions · Gold Coast</span>
-        </div>
-        <div class="card">
-          <span class="num">03</span>
-          <h3>App and community access only coaching</h3>
-          <p>16 Week Training programme.</p>
-          <span class="tag">Monthly · Self-led with support</span>
-        </div>
-      </div>
-      <div class="photo-duo">
-        <img src="img/shot3-portrait.webp" alt="Strength work in the gym" width="760" height="950" loading="lazy">
-        <img src="img/shot5-portrait.webp" alt="Loading a barbell between sets" width="760" height="950" loading="lazy">
+      <div class="split-rows">
+        <article class="split">
+          <div class="split-media">
+            <img src="img/shot3-portrait.webp" alt="Strength work in the gym" width="760" height="950" loading="lazy">
+          </div>
+          <div class="split-copy">
+            <span class="num">01</span>
+            <h3>One-on-one online coaching</h3>
+            <p>A custom programme delivered through the training app I built myself, with weekly check-ins on load, reps, and recovery. Your plan moves as your life does — not the other way round.</p>
+            <span class="tag">Monthly · Anywhere</span>
+          </div>
+        </article>
+        <article class="split flip">
+          <div class="split-media">
+            <img src="img/shot5-portrait.webp" alt="Loading a barbell between sets" width="760" height="950" loading="lazy">
+          </div>
+          <div class="split-copy">
+            <span class="num">02</span>
+            <h3>In-person PT (only if you're in the Gold Coast)</h3>
+            <p>One-to-one sessions on the Gold Coast. Technique corrected in real time, no wasted reps, no guessing whether you're doing it right.</p>
+            <span class="tag">Sessions · Gold Coast</span>
+          </div>
+        </article>
+        <article class="split">
+          <div class="split-media">
+            <img class="pos-mid" src="img/shot2-portrait.webp" alt="Striking drill during a conditioning session" width="760" height="950" loading="lazy">
+          </div>
+          <div class="split-copy">
+            <span class="num">03</span>
+            <h3>App and community access only coaching</h3>
+            <p>16 Week Training programme.</p>
+            <span class="tag">Monthly · Self-led with support</span>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -1041,15 +1122,13 @@
     </div>
   </section>
 
-  <div class="photo-band">
-    <picture>
-      <source media="(max-width:700px)" srcset="img/shot2-tall.webp">
-      <img src="img/shot2-wide.webp" alt="Striking drill during a conditioning session" width="1600" height="900" loading="lazy">
-    </picture>
-  </div>
-
   <section class="guarantee" id="guarantee">
     <div class="wrap">
+      <div class="split g-split">
+      <div class="split-media g-media">
+        <img src="img/shot4-portrait.webp" alt="Training floor at the gym" width="760" height="950" loading="lazy">
+        <span class="band-pill">12 Week Guarantee</span>
+      </div>
       <div class="g-inner">
         <p class="eyebrow">My guarantee</p>
         <h2 class="g-head">A 180° transformation by week 12,<br><em>or your money back.</em></h2>
@@ -1086,16 +1165,9 @@
         <p class="g-free">Free to apply, and no obligation.</p>
         <p class="g-fine">Refund applies to clients who complete every scheduled check-in and follow the training and nutrition plan built for them.</p>
       </div>
+      </div>
     </div>
   </section>
-
-  <div class="photo-band">
-    <picture>
-      <source media="(max-width:700px)" srcset="img/shot4-tall.webp">
-      <img src="img/shot4-wide.webp" alt="Training floor at the gym" width="1600" height="900" loading="lazy">
-    </picture>
-    <span class="band-pill">12 Week Guarantee</span>
-  </div>
 
   <section class="intake" id="start-here">
     <div class="wrap">
@@ -1300,14 +1372,25 @@
        quote          : the client's own words (leave "" if none yet)
      Leave before/after as "" and the slot shows a placeholder.
      ============================================================ */
-  var FILLER = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.";
+  // Real clients, real words. Quotes are reproduced exactly as each client gave them —
+  // do not rewrite, tidy or embellish them.
 
   var CLIENTS = [
-    { name:"Client 01", role:"Occupation", duration:"XX weeks", quote:FILLER, before:"img/client1-before.webp", after:"img/client1-after.webp" },
-    { name:"Client 02", role:"Occupation", duration:"XX weeks", quote:FILLER, before:"img/client2-before.webp", after:"img/client2-after.webp" },
-    { name:"Client 03", role:"Occupation", duration:"XX weeks", quote:FILLER, before:"img/client3-before.webp", after:"img/client3-after.webp" },
-    { name:"Client 04", role:"Occupation", duration:"XX weeks", quote:FILLER, before:"img/client4-before.webp", after:"img/client4-after.webp" },
-    { name:"Client 05", role:"Occupation", duration:"XX weeks", quote:FILLER, before:"img/client5-before.webp", after:"img/client5-after.webp" }
+    { name:"Tom", role:"Electrician", duration:"12 weeks",
+      quote:"Working full time as a sparky and having a kid training is tough. Matt worked with me perfectly and I got some insane results",
+      before:"img/client1-before.webp", after:"img/client1-after.webp" },
+    { name:"Ahmed", role:"IT", duration:"16 weeks",
+      quote:"Being across the world didn't stop Matt from helping me achieve my results. The check in's were absolutely incredible and helped me so much",
+      before:"img/client2-before.webp", after:"img/client2-after.webp" },
+    { name:"Felix", role:"FIFO", duration:"8 weeks",
+      quote:"I wanted to get ready for summer and even though I work in FIFO was able to transform enough that I'm proud of. Highly recommend",
+      before:"img/client3-before.webp", after:"img/client3-after.webp" },
+    { name:"Kevin", role:"Retail", duration:"12 weeks",
+      quote:"Working with Matt was enjoyable and easy. He kept me on track with his daily check ins. Recommend him!",
+      before:"img/client4-before.webp", after:"img/client4-after.webp" },
+    { name:"Barrett", role:"Chef", duration:"24 weeks",
+      quote:"I've never felt like someone could relate so well. At nearly 200cm, gaining weight for me was difficult. Matt knows this and helped plan my diet and training around this. The results speak for itself. AWESOME!",
+      before:"img/client5-before.webp", after:"img/client5-after.webp" }
   ];
 
   (function(){
