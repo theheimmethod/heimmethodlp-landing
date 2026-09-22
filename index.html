@@ -166,10 +166,28 @@
   }
   .hero-grid{
     position:relative;
-    max-width:62ch;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,0.82fr);
+    gap:clamp(28px,4vw,64px);
+    align-items:center;
+  }
+  .hero-copy{min-width:0;}
+  .hero-media{
+    min-width:0;
+    line-height:0;
+    background:#000;
+    border:1px solid var(--card-line);
+    overflow:hidden;
+  }
+  .hero-media img{
+    display:block;
+    width:100%;
+    height:clamp(320px,38vw,480px);
+    object-fit:cover;
+    object-position:center 22%;
   }
   .hero h1{
-    font-size:clamp(2.6rem,6.4vw,4.6rem);
+    font-size:clamp(2.6rem,5.2vw,4.1rem);
     max-width:14ch;
   }
   .hero h1 em{
@@ -197,8 +215,9 @@
   }
 
   /* ---------- methodology marquee ---------- */
+  /* sits above the footer now, so the hairline goes on top */
   .method-band{
-    border-bottom:1px solid var(--card-line);
+    border-top:1px solid var(--card-line);
     padding:22px 0;
     background:var(--card);
     overflow:hidden;
@@ -959,6 +978,9 @@
 
   @media (max-width:860px){
     nav.primary-nav{display:none;}
+    /* hero stacks: copy first, photo beneath it */
+    .hero-grid{grid-template-columns:1fr;gap:28px;}
+    .hero-media img{height:clamp(300px,64vw,420px);}
     .cards{grid-template-columns:1fr;}
     .process-list{grid-template-columns:1fr 1fr;}
     .carousel-btn{width:38px;height:38px;}
@@ -980,7 +1002,6 @@
   <div class="wrap">
     <a class="brand" href="#top">THE <span class="dot">HEIM</span> METHOD</a>
     <nav class="primary-nav">
-      <a href="#method">Method</a>
       <a href="#coaching">Coaching</a>
       <a href="#results">Results</a>
       <a href="#guarantee">Guarantee</a>
@@ -994,40 +1015,23 @@
 
   <section class="hero">
     <div class="wrap hero-grid">
-      <p class="eyebrow">Gold Coast, QLD — Coaching online &amp; in person</p>
-      <h1>Train with a <em>method</em>, not a guess.</h1>
-      <p class="hero-sub">Personalised 1-on-1 training and nutrition built around your goals. Understanding your preferences and lifestyle.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="#start-here">Start Here</a>
-        <span class="hero-meta">Straight to Matthew</span>
+      <div class="hero-copy">
+        <p class="eyebrow">Gold Coast, QLD — Coaching online &amp; in person</p>
+        <h1>Train with a <em>method</em>, not a guess.</h1>
+        <p class="hero-sub">Personalised 1-on-1 training and nutrition built around your goals. Understanding your preferences and lifestyle.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#start-here">Start Here</a>
+          <span class="hero-meta">Straight to Matthew</span>
+        </div>
+      </div>
+      <div class="hero-media">
+        <picture>
+          <source media="(max-width:860px)" srcset="img/shot1-tall.webp">
+          <img src="img/shot1-wide.webp" alt="Matthew Heim training inside the cage" width="1600" height="900" fetchpriority="high">
+        </picture>
       </div>
     </div>
   </section>
-
-  <div class="method-band" id="method">
-    <div class="method-band-inner">
-      <p class="eyebrow">Every programme is built on —</p>
-      <div class="marquee">
-        <div class="marquee-track" id="marqueeTrack">
-          <span class="pill">Stuart McGill <span>spine mechanics</span></span>
-          <span class="pill">Charles Poliquin <span>tempo &amp; structural balance</span></span>
-          <span class="pill">Cal Dietz <span>triphasic periodisation</span></span>
-          <span class="pill">Brad Schoenfeld <span>hypertrophy science</span></span>
-          <span class="pill">Mike Israetel <span>volume landmarks</span></span>
-          <span class="pill">Eric Helms <span>RPE prescription</span></span>
-          <span class="pill">Ben Patrick / ATG <span>knee &amp; joint health</span></span>
-          <span class="pill">Zatsiorsky &amp; Bompa <span>periodisation theory</span></span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="photo-band">
-    <picture>
-      <source media="(max-width:700px)" srcset="img/shot1-tall.webp">
-      <img src="img/shot1-wide.webp" alt="Training session inside the cage" width="1600" height="900">
-    </picture>
-  </div>
 
   <section id="coaching">
     <div class="wrap">
@@ -1036,7 +1040,6 @@
           <p class="eyebrow">Ways to work together</p>
           <h2>Coaching options.</h2>
         </div>
-        <p class="section-note">Every option starts with the same application — Matthew reads it and tells you which fits.</p>
       </div>
       <div class="split-rows">
         <article class="split">
@@ -1059,17 +1062,6 @@
             <h3>In-person PT (only if you're in the Gold Coast)</h3>
             <p>One-to-one sessions on the Gold Coast. Technique corrected in real time, no wasted reps, no guessing whether you're doing it right.</p>
             <span class="tag">Sessions · Gold Coast</span>
-          </div>
-        </article>
-        <article class="split">
-          <div class="split-media">
-            <img class="pos-mid" src="img/shot2-portrait.webp" alt="Striking drill during a conditioning session" width="760" height="950" loading="lazy">
-          </div>
-          <div class="split-copy">
-            <span class="num">03</span>
-            <h3>App and community access only coaching</h3>
-            <p>16 Week Training programme.</p>
-            <span class="tag">Monthly · Self-led with support</span>
           </div>
         </article>
       </div>
@@ -1182,7 +1174,7 @@
       <div class="funnel-shell">
         <div class="funnel-top">
           <div class="funnel-bar"><i id="funnelBar"></i></div>
-          <p class="funnel-count" id="funnelCount">Question 1 of 8</p>
+          <p class="funnel-count" id="funnelCount">Question 1 of 6</p>
         </div>
 
         <form id="intake-form" novalidate>
@@ -1204,11 +1196,9 @@
             <h3>How old are you?</h3>
             <p class="hint">This changes how recovery and load progression get programmed.</p>
             <div class="opt-grid">
-              <label class="opt"><input type="radio" name="Age" value="Under 18" required><span>Under 18</span></label>
-              <label class="opt"><input type="radio" name="Age" value="18-24"><span>18–24</span></label>
+              <label class="opt"><input type="radio" name="Age" value="18-25" required><span>18–25</span></label>
               <label class="opt"><input type="radio" name="Age" value="25-34"><span>25–34</span></label>
-              <label class="opt"><input type="radio" name="Age" value="35-44"><span>35–44</span></label>
-              <label class="opt"><input type="radio" name="Age" value="45+"><span>45+</span></label>
+              <label class="opt"><input type="radio" name="Age" value="35+"><span>35+</span></label>
             </div>
           </div>
 
@@ -1222,18 +1212,8 @@
             </div>
           </div>
 
-          <div class="fstep" data-step="4" hidden>
-            <h3>Where would you train?</h3>
-            <p class="hint">In-person is Gold Coast only. Everything else runs online.</p>
-            <div class="opt-grid">
-              <label class="opt"><input type="radio" name="Location" value="In person - Gold Coast, QLD" required><span>In person — Gold Coast</span></label>
-              <label class="opt"><input type="radio" name="Location" value="Online - Australia"><span>Online — Australia</span></label>
-              <label class="opt"><input type="radio" name="Location" value="Online - New Zealand"><span>Online — New Zealand</span></label>
-              <label class="opt"><input type="radio" name="Location" value="Not sure yet"><span>Not sure yet</span></label>
-            </div>
-          </div>
 
-          <div class="fstep" data-step="5" hidden>
+          <div class="fstep" data-step="4" hidden>
             <h3>How many days a week can you realistically train?</h3>
             <p class="hint">Be honest, not aspirational — the programme gets built around this number.</p>
             <div class="opt-grid">
@@ -1244,19 +1224,14 @@
             </div>
           </div>
 
-          <div class="fstep" data-step="6" hidden>
-            <h3>What made you fill this out today — not last week, today?</h3>
-            <p class="hint">Be honest. This is the part Matthew actually reads.</p>
-            <textarea name="Why today" id="whyToday" placeholder="What changed, what's been building up, or what finally tipped it over." required></textarea>
-          </div>
 
-          <div class="fstep" data-step="7" hidden>
+          <div class="fstep" data-step="5" hidden>
             <h3>What are you ready to commit — and what might get in the way?</h3>
-            <p class="hint">Results take 12–16 weeks of consistency. Tell me what you can give it, and what's realistically going to make that hard.</p>
-            <textarea name="Commitment" id="commitment" placeholder="Time you can give it, what's derailed you before, work or family constraints." required></textarea>
+            <p class="hint">Optional, but it helps. Results take 12–16 weeks of consistency — tell me what you can give it, and what's realistically going to make that hard. Skip it if you'd rather talk it through.</p>
+            <textarea name="Commitment" id="commitment" placeholder="Time you can give it, what's derailed you before, work or family constraints."></textarea>
           </div>
 
-          <div class="fstep" data-step="8" hidden>
+          <div class="fstep" data-step="6" hidden>
             <h3>Where do I send it?</h3>
             <p class="hint">Straight to Matthew — nowhere else, no list, no automation.</p>
             <div class="f-field">
@@ -1287,22 +1262,8 @@
               </select>
             </div>
             <div class="f-field">
-              <label for="timezone">Time zone</label>
-              <select id="timezone" name="Time zone" required>
-                <option value="AEST/AEDT - QLD, NSW, VIC, TAS, ACT" selected>AEST / AEDT — QLD, NSW, VIC, TAS, ACT</option>
-                <option value="ACST/ACDT - SA, NT">ACST / ACDT — SA, NT</option>
-                <option value="AWST - WA">AWST — WA</option>
-                <option value="NZST/NZDT - New Zealand">NZST / NZDT — New Zealand</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-            <div class="f-field">
               <label for="instagram">Instagram handle <span style="text-transform:none;letter-spacing:0;font-family:var(--font-body);">(optional)</span></label>
               <input type="text" id="instagram" name="Instagram" placeholder="@yourhandle">
-            </div>
-            <div class="f-field">
-              <label for="extra">Anything else Matthew should know? <span style="text-transform:none;letter-spacing:0;font-family:var(--font-body);">(injuries, history, questions)</span></label>
-              <textarea id="extra" name="Anything else" placeholder="Injuries or pain, past training history, or anything you want answered on the call." style="min-height:110px;"></textarea>
             </div>
           </div>
 
@@ -1334,6 +1295,24 @@
   </section>
 
 </main>
+
+<div class="method-band" id="method">
+  <div class="method-band-inner">
+    <p class="eyebrow">Every programme is built on —</p>
+    <div class="marquee">
+      <div class="marquee-track" id="marqueeTrack">
+        <span class="pill">Stuart McGill <span>spine mechanics</span></span>
+        <span class="pill">Charles Poliquin <span>tempo &amp; structural balance</span></span>
+        <span class="pill">Cal Dietz <span>triphasic periodisation</span></span>
+        <span class="pill">Brad Schoenfeld <span>hypertrophy science</span></span>
+        <span class="pill">Mike Israetel <span>volume landmarks</span></span>
+        <span class="pill">Eric Helms <span>RPE prescription</span></span>
+        <span class="pill">Ben Patrick / ATG <span>knee &amp; joint health</span></span>
+        <span class="pill">Zatsiorsky &amp; Bompa <span>periodisation theory</span></span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <footer>
   <div class="wrap">
