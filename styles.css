@@ -157,6 +157,65 @@
   .btn-ghost:hover{border-color:var(--paper-dim);}
   .header-cta{display:inline-flex;}
 
+
+  /* ---------- mobile menu ---------- */
+  .nav-toggle{
+    display:none;
+    width:44px;
+    height:44px;
+    align-items:center;
+    justify-content:center;
+    background:transparent;
+    border:1px solid var(--card-line);
+    border-radius:3px;
+    cursor:pointer;
+    padding:0;
+    color:var(--paper);
+    transition:border-color .15s ease, background .15s ease, transform .12s ease;
+  }
+  .nav-toggle:active{transform:scale(0.94);}
+  .nav-toggle:hover{border-color:var(--paper-dim);}
+  .nav-toggle:focus-visible{outline:2px solid var(--blue-bright);outline-offset:2px;}
+  .nav-bars{display:block;width:18px;height:12px;position:relative;}
+  .nav-bars i{
+    position:absolute;
+    left:0;
+    width:100%;
+    height:2px;
+    background:currentColor;
+    border-radius:2px;
+    transition:transform .26s cubic-bezier(.22,.61,.36,1), opacity .16s ease;
+  }
+  .nav-bars i:nth-child(1){top:0;}
+  .nav-bars i:nth-child(2){top:5px;}
+  .nav-bars i:nth-child(3){top:10px;}
+  /* the bars become the close mark, so open and close are one continuous movement */
+  .nav-toggle[aria-expanded="true"] .nav-bars i:nth-child(1){transform:translateY(5px) rotate(45deg);}
+  .nav-toggle[aria-expanded="true"] .nav-bars i:nth-child(2){opacity:0;}
+  .nav-toggle[aria-expanded="true"] .nav-bars i:nth-child(3){transform:translateY(-5px) rotate(-45deg);}
+
+  .mobile-nav{display:none;}
+  .mobile-nav > div{overflow:hidden;min-height:0;}
+  .mobile-nav-inner{
+    display:flex;
+    flex-direction:column;
+    padding:6px clamp(20px,4vw,48px) 14px;
+  }
+  .mobile-nav-inner a{
+    font-family:var(--font-mono);
+    font-size:0.92rem;
+    letter-spacing:0.07em;
+    text-transform:uppercase;
+    text-decoration:none;
+    color:var(--paper-dim);
+    padding:15px 0;
+    border-bottom:1px solid var(--card-line);
+    transition:color .15s ease, padding-left .18s ease;
+  }
+  .mobile-nav-inner a:last-child{border-bottom:none;}
+  .mobile-nav-inner a:hover,.mobile-nav-inner a:focus-visible{color:var(--paper);}
+  .mobile-nav-inner a:active{color:var(--blue-bright);padding-left:4px;}
+
   /* ---------- hero ---------- */
   .hero{
     padding:clamp(56px,9vw,110px) 0 clamp(48px,7vw,80px);
@@ -874,6 +933,21 @@
   .opt input:focus-visible + span{outline:2px solid var(--blue-bright);outline-offset:3px;}
   /* the press itself is the feedback, so it fires on pointer-down */
   .opt:active span{transform:scale(0.98);}
+  /* hover shows you what picking it will look like, and breathes gently while you decide.
+     hover:hover keeps it off touch screens, where :hover sticks after a tap. */
+  @media (hover:hover){
+    .opt:hover input:not(:checked) + span{
+      background:var(--blue);
+      border-color:var(--blue);
+      color:var(--paper);
+      animation:optBreathe 1.8s ease-in-out infinite;
+    }
+  }
+  /* a ring, not a scale: it reads as soft and shifts nothing around it */
+  @keyframes optBreathe{
+    0%,100%{box-shadow:0 0 0 0 rgba(63,94,234,0.0);}
+    50%{box-shadow:0 0 0 7px rgba(63,94,234,0.16);}
+  }
 
   .f-field{margin-bottom:14px;}
   .f-field label{
@@ -1005,6 +1079,17 @@
 
   @media (max-width:860px){
     nav.primary-nav{display:none;}
+    .nav-toggle{display:inline-flex;}
+    /* grid-rows 0fr to 1fr animates open without guessing a max-height */
+    .mobile-nav{
+      display:grid;
+      grid-template-rows:0fr;
+      background:rgba(6,6,6,0.97);
+      backdrop-filter:blur(10px);
+      border-top:1px solid transparent;
+      transition:grid-template-rows .3s cubic-bezier(.22,.61,.36,1), border-top-color .3s ease;
+    }
+    .mobile-nav.is-open{grid-template-rows:1fr;border-top-color:var(--card-line);}
     /* hero stacks: copy first, photo beneath it */
     .hero-grid{grid-template-columns:1fr;gap:28px;}
     .hero-media img{height:clamp(300px,64vw,420px);}
@@ -1015,6 +1100,7 @@
     .carousel-btn.next{right:8px;}
   }
   @media (max-width:520px){
+    .header-cta{display:none;}
     .process-list{grid-template-columns:1fr;}
     .section-note{text-align:left;}
     .opt-grid{grid-template-columns:1fr;}
@@ -1036,7 +1122,10 @@
   @media (prefers-reduced-motion: reduce){
     .fstep{animation:stepFade .2s ease both !important;}
     .thumb-strip{scroll-snap-type:none;}
-    .opt:active span,.thumb:active,.carousel-btn:active{transform:none;}
+    .opt:active span,.thumb:active,.carousel-btn:active,.nav-toggle:active{transform:none;}
+    .opt:hover input:not(:checked) + span{animation:none;}
+    .mobile-nav{transition:none;}
+    .nav-bars i{transition:opacity .16s ease;}
   }
 
   /* Translucent surfaces become frosty and solid. */
@@ -1044,6 +1133,7 @@
     .site-header{background:var(--ink);backdrop-filter:none;}
     .carousel-btn{background:var(--ink);backdrop-filter:none;}
     .duration-pill,.ba-label,.thumb-tag{backdrop-filter:none;}
+    .mobile-nav{background:var(--ink);backdrop-filter:none;}
   }
 
   /* Near-solid backgrounds with defined, contrasting edges. */
@@ -1053,4 +1143,6 @@
     .carousel-btn{background:var(--ink);border-color:var(--paper);backdrop-filter:none;}
     .btn-ghost{border-color:var(--paper);}
     .tag{border-top-color:var(--card-line);}
+    .mobile-nav{background:var(--ink);backdrop-filter:none;}
+    .nav-toggle{border-color:var(--paper);}
   }
