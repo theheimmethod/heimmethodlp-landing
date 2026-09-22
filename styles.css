@@ -30,6 +30,8 @@
     html{scroll-behavior:auto;}
     *,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;}
   }
+  /* the per-component accessibility overrides live at the END of this file,
+     so they win the cascade against the component rules they are overriding */
 
   body{
     margin:0;
@@ -47,11 +49,20 @@
     font-family:var(--font-display);
     text-transform:uppercase;
     font-weight:800;
-    letter-spacing:0.01em;
-    line-height:0.98;
+    /* tracking and leading are set per size below, never one value for all of them:
+       large display type reads too loose as it grows, small type needs the room back */
+    letter-spacing:0;
+    line-height:1.0;
     margin:0;
     text-wrap:balance;
   }
+  /* large display: tighten as it grows */
+  .hero h1{letter-spacing:-0.016em;line-height:0.96;}
+  .g-head{letter-spacing:-0.012em;line-height:0.98;}
+  .section-head h2{letter-spacing:-0.01em;line-height:0.99;}
+  /* small headings: leave tracking alone and give the lines room to breathe */
+  .split-copy h3,.card h3{letter-spacing:0;line-height:1.06;}
+  .fstep h3{letter-spacing:0;line-height:1.1;}
 
   a{color:inherit;}
 
@@ -517,8 +528,11 @@
     justify-content:center;
     cursor:pointer;
     z-index:2;
-    transition:background .15s ease, border-color .15s ease;
+    transition:background .15s ease, border-color .15s ease, transform .12s ease;
   }
+  .carousel-btn:active{transform:translateY(-50%) scale(0.92);}
+  /* ~8px of invisible hit padding so the tap target is bigger than the circle */
+  .carousel-btn::after{content:"";position:absolute;inset:-8px;border-radius:50%;}
   .carousel-btn:hover{background:var(--blue);border-color:var(--blue);}
   .carousel-btn:focus-visible{outline:2px solid var(--blue-bright);outline-offset:2px;}
   .carousel-btn.prev{left:14px;}
@@ -552,7 +566,12 @@
     overflow-x:auto;
     padding-bottom:10px;
     scrollbar-width:thin;
+    /* flick the strip and it lands on a card rather than stopping mid-thumbnail */
+    scroll-snap-type:x proximity;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
   }
+  .thumb{scroll-snap-align:start;}
   .thumb{
     flex:0 0 168px;
     background:var(--ink);
@@ -566,6 +585,7 @@
     font:inherit;
     transition:border-color .15s ease, transform .12s ease;
   }
+  .thumb:active{transform:scale(0.985);}
   .thumb:hover{border-color:var(--paper-dim);}
   .thumb:focus-visible{outline:2px solid var(--blue-bright);outline-offset:2px;}
   .thumb[aria-selected="true"]{border-color:var(--blue-bright);}
@@ -788,8 +808,12 @@
   }
 
   form#intake-form{padding:22px clamp(20px,4vw,40px) 34px;}
-  .fstep{animation:fadeUp .28s ease both;}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  /* forward slides in from the right, Back slides in from the left, so the motion
+     matches the direction of travel instead of every step arriving the same way */
+  .fstep{animation:stepFwd .3s cubic-bezier(.22,.61,.36,1) both;}
+  form.is-back .fstep{animation-name:stepBack;}
+  @keyframes stepFwd{from{opacity:0;transform:translate3d(18px,0,0);}to{opacity:1;transform:none;}}
+  @keyframes stepBack{from{opacity:0;transform:translate3d(-18px,0,0);}to{opacity:1;transform:none;}}
   .fstep h3{
     font-family:var(--font-display);
     text-transform:uppercase;
@@ -848,6 +872,8 @@
     color:var(--paper);
   }
   .opt input:focus-visible + span{outline:2px solid var(--blue-bright);outline-offset:3px;}
+  /* the press itself is the feedback, so it fires on pointer-down */
+  .opt:active span{transform:scale(0.98);}
 
   .f-field{margin-bottom:14px;}
   .f-field label{
@@ -912,6 +938,7 @@
   .fbtn-next{background:var(--paper);color:var(--ink);}
   .fbtn-next:hover:not(:disabled){background:var(--blue);color:var(--paper);}
   .fbtn-next:active:not(:disabled){transform:translateY(1px);}
+  .fbtn-back:active{transform:translateY(1px);}
   .fbtn-next:disabled{opacity:0.34;cursor:not-allowed;}
 
   #confirm{padding:0 clamp(20px,4vw,40px) 36px;}
@@ -993,4 +1020,37 @@
     .opt-grid{grid-template-columns:1fr;}
     .duration-pill{font-size:0.62rem;padding:7px 12px;}
     .thumb{flex:0 0 140px;}
+  }
+
+
+  /* ============================================================
+     ACCESSIBILITY PREFERENCES
+     Last in the file on purpose: these override component rules
+     defined above, and equal-specificity rules are won by the later one.
+     ============================================================ */
+
+  @keyframes stepFade{from{opacity:0;}to{opacity:1;}}
+
+  /* Reduced motion is not "no feedback", it is a gentler, non-vestibular
+     equivalent: cross-fade instead of travel, and no snap-driven scrolling. */
+  @media (prefers-reduced-motion: reduce){
+    .fstep{animation:stepFade .2s ease both !important;}
+    .thumb-strip{scroll-snap-type:none;}
+    .opt:active span,.thumb:active,.carousel-btn:active{transform:none;}
+  }
+
+  /* Translucent surfaces become frosty and solid. */
+  @media (prefers-reduced-transparency: reduce){
+    .site-header{background:var(--ink);backdrop-filter:none;}
+    .carousel-btn{background:var(--ink);backdrop-filter:none;}
+    .duration-pill,.ba-label,.thumb-tag{backdrop-filter:none;}
+  }
+
+  /* Near-solid backgrounds with defined, contrasting edges. */
+  @media (prefers-contrast: more){
+    :root{--paper-dim:#e8eae4;--mono-text:#b9bed2;--card-line:#4a5068;}
+    .site-header{background:var(--ink);backdrop-filter:none;}
+    .carousel-btn{background:var(--ink);border-color:var(--paper);backdrop-filter:none;}
+    .btn-ghost{border-color:var(--paper);}
+    .tag{border-top-color:var(--card-line);}
   }
