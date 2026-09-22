@@ -290,7 +290,8 @@
     flex-direction:column;
     gap:14px;
   }
-  .card .num{font-family:var(--font-mono);font-size:0.78rem;color:var(--red);}
+  /* section numbers match the FAQ's 01/02/03 blue */
+  .card .num{font-family:var(--font-mono);font-size:0.78rem;color:var(--blue-bright);}
   .card h3{font-size:1.4rem;}
   .card p{color:var(--paper-dim);font-size:0.95rem;margin:0;}
   .card .tag{
@@ -341,7 +342,7 @@
     justify-content:center;
   }
   .split-media img.pos-mid{object-position:center 42%;}
-  .split-copy .num{font-family:var(--font-mono);font-size:0.78rem;color:var(--red);}
+  .split-copy .num{font-family:var(--font-mono);font-size:0.78rem;color:var(--blue-bright);}
   .split-copy h3{font-size:clamp(1.3rem,2.3vw,1.7rem);}
   .split-copy p{color:var(--paper-dim);font-size:0.98rem;margin:0;max-width:46ch;}
   .split-copy .tag{
