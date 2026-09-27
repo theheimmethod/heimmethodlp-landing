@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
 <link rel="preload" href="fonts/AlteHaasGrotesk-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=4">
+<link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
 
@@ -297,6 +297,14 @@
             </div>
           </div>
 
+          <!-- Web3Forms: hidden fields. The access key is public by design, it is
+               safe to sit in the page source and cannot be used to read anything. -->
+          <input type="hidden" name="access_key" id="w3fKey" value="REPLACE_WITH_WEB3FORMS_ACCESS_KEY">
+          <input type="hidden" name="subject" id="w3fSubject" value="New Start Here application">
+          <input type="hidden" name="from_name" value="The Heim Method site">
+          <!-- bots fill this in, humans never see it -->
+          <input type="checkbox" name="botcheck" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+
           <div class="funnel-nav">
             <button type="button" class="fbtn fbtn-back" id="prevBtn" hidden>← Back</button>
             <button type="button" class="fbtn fbtn-next" id="nextBtn" disabled>Next →</button>
@@ -305,9 +313,15 @@
         </form>
 
         <div id="confirm" hidden>
-          <div class="confirm-box">
-            <h3>Almost done.</h3>
-            <p>Your email app should be opening now, addressed to Matthew with everything filled in, so just hit send. If nothing opened, copy your answers below and send them by email or Instagram DM instead.</p>
+          <div class="confirm-box" id="confirmSent" hidden>
+            <h3>That's with Matthew.</h3>
+            <p>Your application has been sent. Matthew reads every one himself and will come back to you directly.</p>
+            <p class="confirm-meta">Nothing else for you to do.</p>
+          </div>
+
+          <div class="confirm-box" id="confirmFallback" hidden>
+            <h3>Almost there.</h3>
+            <p>That didn't send automatically. Copy your answers below and email them over, or send them as an Instagram DM, and you'll be in exactly the same queue.</p>
             <textarea id="confirmText" readonly></textarea>
             <a class="btn btn-primary" href="#" id="mailtoRetry">Open email app</a>
             <button type="button" class="btn btn-ghost" id="copyBtn">Copy answers</button>
@@ -563,16 +577,57 @@
     return 'mailto:theheimmethod@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
   }
 
+  var ENDPOINT = 'https://api.web3forms.com/submit';
+
+  function showResult(sent){
+    var wrap = document.getElementById('confirm');
+    document.getElementById('confirmSent').hidden = !sent;
+    document.getElementById('confirmFallback').hidden = sent;
+    if(!sent){
+      document.getElementById('confirmText').value = buildSummary();
+      document.getElementById('mailtoRetry').setAttribute('href', buildMailto());
+    }
+    form.hidden = true;
+    wrap.hidden = false;
+    wrap.scrollIntoView({block:'start', behavior:'smooth'});
+  }
+
   form.addEventListener('submit', function(e){
     e.preventDefault();
     if(!stepAnswered()) return;
+    if(submitBtn.dataset.busy === '1') return;
 
-    var mailtoUrl = buildMailto();
-    document.getElementById('confirmText').value = buildSummary();
-    document.getElementById('mailtoRetry').setAttribute('href', mailtoUrl);
-    document.getElementById('confirm').hidden = false;
-    window.location.href = mailtoUrl;
-    document.getElementById('confirm').scrollIntoView({block:'start', behavior:'smooth'});
+    // feedback during the send, not only at the end
+    submitBtn.dataset.busy = '1';
+    submitBtn.disabled = true;
+    var label = submitBtn.textContent;
+    submitBtn.textContent = 'Sending…';
+
+    // give Matthew a useful subject line rather than a generic one
+    var who = document.getElementById('fullName').value.trim();
+    if(who) document.getElementById('w3fSubject').value = 'Start Here application: ' + who;
+
+    var payload = new FormData(form);
+
+    fetch(ENDPOINT, {
+      method: 'POST',
+      body: payload,
+      headers: { 'Accept': 'application/json' }
+    })
+    .then(function(r){ return r.json().catch(function(){ return {success: r.ok}; }); })
+    .then(function(data){
+      if(data && data.success){ showResult(true); }
+      else { throw new Error((data && data.message) || 'rejected'); }
+    })
+    .catch(function(){
+      // offline, blocked, key not set: never lose the application
+      showResult(false);
+    })
+    .then(function(){
+      submitBtn.dataset.busy = '0';
+      submitBtn.disabled = false;
+      submitBtn.textContent = label;
+    });
   });
 
   document.getElementById('copyBtn').addEventListener('click', function(){

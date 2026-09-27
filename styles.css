@@ -158,6 +158,26 @@
   .header-cta{display:inline-flex;}
 
 
+
+  /* honeypot: off-screen, never focusable, invisible to real people */
+  .hp-field{
+    position:absolute !important;
+    left:-9999px;
+    width:1px;
+    height:1px;
+    opacity:0;
+    pointer-events:none;
+  }
+  .confirm-meta{
+    font-family:var(--font-mono);
+    font-size:0.78rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--mono-text);
+    margin-top:14px;
+  }
+  .fbtn-next[disabled]{cursor:progress;}
+
   /* ---------- mobile menu ---------- */
   .nav-toggle{
     display:none;
