@@ -297,11 +297,6 @@
             </div>
           </div>
 
-          <!-- Web3Forms: hidden fields. The access key is public by design, it is
-               safe to sit in the page source and cannot be used to read anything. -->
-          <input type="hidden" name="access_key" id="w3fKey" value="REPLACE_WITH_WEB3FORMS_ACCESS_KEY">
-          <input type="hidden" name="subject" id="w3fSubject" value="New Start Here application">
-          <input type="hidden" name="from_name" value="The Heim Method site">
           <!-- bots fill this in, humans never see it -->
           <input type="checkbox" name="botcheck" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
 
@@ -577,7 +572,10 @@
     return 'mailto:theheimmethod@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
   }
 
-  var ENDPOINT = 'https://api.web3forms.com/submit';
+  // Google Apps Script web app. Everything lands in Matthew's own Google account:
+  // one row per application in the Sheet, plus an email. Replace with the /exec URL
+  // from Deploy > New deployment. See HeimMethod-Applications.gs for the script.
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbx-j66q895XzfI3Cy04aJXaedlozc0bg_iizKV7pemNygPtH_inFBu3xU7W6iMohDs/exec';
 
   function showResult(sent){
     var wrap = document.getElementById('confirm');
@@ -603,16 +601,17 @@
     var label = submitBtn.textContent;
     submitBtn.textContent = 'Sending…';
 
-    // give Matthew a useful subject line rather than a generic one
-    var who = document.getElementById('fullName').value.trim();
-    if(who) document.getElementById('w3fSubject').value = 'Start Here application: ' + who;
-
-    var payload = new FormData(form);
+    // url-encoded keeps this a "simple" request, so the browser sends it straight
+    // through with no CORS preflight, which Apps Script does not answer
+    var payload = new URLSearchParams();
+    new FormData(form).forEach(function(value, key){
+      if(String(value).trim() !== '') payload.append(key, value);
+    });
 
     fetch(ENDPOINT, {
       method: 'POST',
       body: payload,
-      headers: { 'Accept': 'application/json' }
+      redirect: 'follow'
     })
     .then(function(r){ return r.json().catch(function(){ return {success: r.ok}; }); })
     .then(function(data){
