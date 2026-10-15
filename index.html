@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://cloudflareinsights.com; frame-src https://challenges.cloudflare.com; form-action 'self'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>The Heim Method | Evidence-Based Coaching, Gold Coast</title>
 <meta name="description" content="Evidence-based online and in-person personal training with Matthew Heim in Gold Coast, Queensland. Coaching for Australia and New Zealand. One-on-one coaching, in-person PT, and standalone training programmes.">
 <meta name="color-scheme" content="dark">
@@ -258,7 +260,7 @@
           <div class="fstep" data-step="5" hidden>
             <h3>What are you ready to commit, and what might get in the way?</h3>
             <p class="hint">Optional. Skip it if you'd rather talk it through.</p>
-            <textarea name="Commitment" id="commitment" placeholder="Time you can give it, what's derailed you before, work or family constraints."></textarea>
+            <textarea name="Commitment" id="commitment" maxlength="2000" placeholder="Time you can give it, what's derailed you before, work or family constraints."></textarea>
           </div>
 
           <div class="fstep" data-step="6" hidden>
@@ -266,11 +268,11 @@
             <p class="hint">Straight to me. Nowhere else, no list, no automation.</p>
             <div class="f-field">
               <label for="fullName">Full name</label>
-              <input type="text" id="fullName" name="Full name" autocomplete="name" placeholder="Jane Smith" required>
+              <input type="text" id="fullName" name="Full name" autocomplete="name" placeholder="Jane Smith" maxlength="80" required>
             </div>
             <div class="f-field">
               <label for="email">Email</label>
-              <input type="email" id="email" name="Email" autocomplete="email" placeholder="jane@email.com" required>
+              <input type="email" id="email" name="Email" autocomplete="email" placeholder="jane@email.com" maxlength="120" spellcheck="false" required>
             </div>
             <div class="f-field">
               <label for="phone">Phone</label>
@@ -280,7 +282,7 @@
                   <option value="+64">🇳🇿 +64</option>
                   <option value="+other">Other</option>
                 </select>
-                <input type="tel" id="phone" name="Phone" autocomplete="tel" placeholder="4xx xxx xxx" required>
+                <input type="tel" id="phone" name="Phone" autocomplete="tel" placeholder="4xx xxx xxx" maxlength="24" inputmode="tel" required>
               </div>
             </div>
             <div class="f-field">
@@ -293,12 +295,19 @@
             </div>
             <div class="f-field">
               <label for="instagram">Instagram handle <span style="text-transform:none;letter-spacing:0;font-family:var(--font-body);">(optional)</span></label>
-              <input type="text" id="instagram" name="Instagram" placeholder="@yourhandle">
+              <input type="text" id="instagram" name="Instagram" placeholder="@yourhandle" maxlength="40" spellcheck="false">
             </div>
           </div>
 
           <!-- bots fill this in, humans never see it -->
           <input type="checkbox" name="botcheck" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <!-- how long the form was open. Bots post instantly; the endpoint
+               rejects anything under five seconds. -->
+          <input type="hidden" name="_elapsed" id="elapsedField" value="">
+
+          <!-- Cloudflare Turnstile renders here once TURNSTILE_SITEKEY is set below -->
+          <div id="turnstileSlot"></div>
 
           <div class="funnel-nav">
             <button type="button" class="fbtn fbtn-back" id="prevBtn" hidden>← Back</button>
@@ -560,6 +569,8 @@
     var lines = [];
     fd.forEach(function(value, key){
       if(String(value).trim() === '') return;
+      // internal fields: never show these to the applicant
+      if(key === 'botcheck' || key === '_elapsed' || key.indexOf('cf-turnstile') === 0) return;
       lines.push(key + ': ' + value);
     });
     return lines.join('\n');
@@ -576,6 +587,33 @@
   // one row per application in the Sheet, plus an email. Replace with the /exec URL
   // from Deploy > New deployment. See HeimMethod-Applications.gs for the script.
   var ENDPOINT = 'https://script.google.com/macros/s/AKfycbx-j66q895XzfI3Cy04aJXaedlozc0bg_iizKV7pemNygPtH_inFBu3xU7W6iMohDs/exec';
+
+  // ---------- bot protection ----------
+  // This URL is public: a static page has to carry it in its source, and no
+  // amount of client-side cleverness hides it. So the real checks all live
+  // server-side in the Apps Script. What the page does is give that script
+  // things to check: a honeypot, how long the form was open, and a Turnstile
+  // token once one is configured.
+
+  // Paste the Turnstile site key from Cloudflare > Turnstile to switch it on.
+  // Left empty, the form works exactly as it does now.
+  var TURNSTILE_SITEKEY = '';
+
+  var formOpenedAt = Date.now();
+
+  if (TURNSTILE_SITEKEY) {
+    var ts = document.createElement('script');
+    ts.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    ts.async = true;
+    ts.defer = true;
+    document.head.appendChild(ts);
+
+    var slot = document.getElementById('turnstileSlot');
+    slot.className = 'cf-turnstile';
+    slot.setAttribute('data-sitekey', TURNSTILE_SITEKEY);
+    slot.setAttribute('data-theme', 'dark');
+    slot.setAttribute('data-size', 'flexible');
+  }
 
   function showResult(sent){
     var wrap = document.getElementById('confirm');
@@ -603,6 +641,9 @@
 
     // url-encoded keeps this a "simple" request, so the browser sends it straight
     // through with no CORS preflight, which Apps Script does not answer
+    document.getElementById('elapsedField').value =
+      String(Math.round((Date.now() - formOpenedAt) / 1000));
+
     var payload = new URLSearchParams();
     new FormData(form).forEach(function(value, key){
       if(String(value).trim() !== '') payload.append(key, value);
